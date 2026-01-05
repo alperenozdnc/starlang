@@ -7,7 +7,7 @@ and should be ignored too. ##
 import starlang>io.st;
 
 decl func(): nothing {
-    while (mut int x = 0; x < 1000; x++) {
+    for (mut int x = 0; x < 1000; x++) {
         printlnf("Iteration {x}");
     }
 
