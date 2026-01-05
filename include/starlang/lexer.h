@@ -45,6 +45,9 @@ typedef enum {
     LEX_FALSE
 } lexeme_type_t;
 
+/*
+ * the struct that holds all the information about a lexeme.
+ */
 typedef struct {
     lexeme_type_t kind;
 
