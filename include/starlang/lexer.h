@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stddef.h>
+#include <stdio.h>
 
 /*
  * the enum that lists all lexeme types.
@@ -57,3 +58,14 @@ typedef struct {
     size_t line;
     size_t col;
 } lexeme_t;
+
+/*
+ * the struct that holds all the information about the lexer instance.
+ */
+typedef struct {
+    char curr_char;
+    FILE *curr_fptr;
+
+    lexeme_t **lexemes;
+    size_t lexeme_count;
+} lexer_t;
