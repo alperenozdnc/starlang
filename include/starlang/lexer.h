@@ -1,5 +1,7 @@
 #pragma once
 
+#include <starlang/arena.h>
+
 #include <stddef.h>
 #include <stdio.h>
 
@@ -69,3 +71,5 @@ typedef struct {
     lexeme_t **lexemes;
     size_t lexeme_count;
 } lexer_t;
+
+lexer_t *lexer_init(arena_t *arena);
