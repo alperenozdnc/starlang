@@ -1,0 +1,13 @@
+#include <starlang/utils.h>
+
+#include <stdbool.h>
+#include <string.h>
+
+bool util_validate_file_ext(char *pathname, char *ext) {
+    char *ext_str = strrchr(pathname, '.');
+
+    if (!ext_str)
+        return false;
+
+    return strcmp(ext_str, ext) == 0;
+}
