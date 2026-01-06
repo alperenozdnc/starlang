@@ -1,5 +1,7 @@
 #pragma once
 
+#include <starlang/arena.h>
+
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -29,4 +31,9 @@ bool util_validate_file_ext(char *pathname, char *ext);
  * gets a file's size in terms of total bytes. this utility assumes `pathname`
  * is already validated to exist on disk, and is validated to be a regular file.
  */
-size_t util_get_file_size(FILE *f);
+ssize_t util_get_file_size(FILE *f);
+
+/*
+ * strdup's a file's content into a given arena.
+ */
+char *util_read_file_into_arena(arena_t *arena, FILE *f);
