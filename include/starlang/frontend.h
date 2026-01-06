@@ -10,7 +10,8 @@
 #define FRONTEND_PRINT_PREFIX "[starlang] "
 
 #define FRONTEND_PRINT(code, prefix, msg, ...)                                 \
-    cliprint(code, prefix, msg, __VA_ARGS__)
+    cliprint(code, prefix, msg,                                                \
+             ##__VA_ARGS__) // '##' makes var args not required
 
 /*
  * interprets starlang code in given filename. returns boolean based on success.
