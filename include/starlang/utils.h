@@ -1,6 +1,8 @@
 #pragma once
 
 #include <stdbool.h>
+#include <stddef.h>
+#include <stdio.h>
 
 /*
  * checks for existence of any kind of object on path `pathname`. returns a
@@ -22,3 +24,9 @@ bool util_is_path_a_file(char *pathname);
  * be prefixed by a dot.
  */
 bool util_validate_file_ext(char *pathname, char *ext);
+
+/*
+ * gets a file's size in terms of total bytes. this utility assumes `pathname`
+ * is already validated to exist on disk, and is validated to be a regular file.
+ */
+size_t util_get_file_size(FILE *f);
