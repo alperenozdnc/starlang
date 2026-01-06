@@ -17,7 +17,7 @@
  */
 bool frontend_entrypoint(char *filename);
 
-#define CLI_CMD_NAME "star"
+#define CLI_CMD_NAME "starlang"
 
 #define CLI_DESC "an interpreted language made for educational purposes."
 
