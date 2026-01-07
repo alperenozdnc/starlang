@@ -67,6 +67,9 @@ $(STARLANG_BIN): $(ARENA_OBJ) $(LEXER_OBJ) $(UTILS_OBJ) $(FRONTEND_OBJ)
 
 all: $(STARLANG_BIN)
 
+debug:
+	@$(MAKE) all BUILD=debug
+
 install: $(STARLANG_BIN)
 	@sudo cp $(STARLANG_BIN) $(ROOT_BIN_DIR)
 
