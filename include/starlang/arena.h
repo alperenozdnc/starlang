@@ -5,6 +5,11 @@
 
 #define ARENA_ALIGN_SIZE sizeof(void *)
 
+#define ARENA_ALIGN_BLOCK(size)                                                \
+    size % ARENA_ALIGN_SIZE != 0                                               \
+        ? size + (ARENA_ALIGN_SIZE - (size % ARENA_ALIGN_SIZE))                \
+        : size
+
 /*
  * struct for keeping information about an arena instance
  */
@@ -26,6 +31,11 @@ arena_t *arena_init(size_t capacity);
  * beginning of that space.
  */
 void *arena_alloc(arena_t *arena, size_t size);
+
+/*
+ * resizes a given arena `arena` to a given size `size`.
+ */
+void arena_resize(arena_t *arena, size_t size);
 
 /*
  * frees an arena instance.
