@@ -5,17 +5,17 @@
 
 arena_t *arena_init(size_t capacity) {
     assert(capacity > 0);
-    assert(capacity % ARENA_ALIGN_SIZE == 0); // not forced, just preference
 
-    arena_t *arena = malloc(sizeof(*arena) + capacity);
+    size_t aligned_capacity = ARENA_ALIGN_BLOCK(capacity);
+    arena_t *arena = malloc(sizeof(*arena) + aligned_capacity);
 
     if (!arena)
         return NULL;
 
-    arena->capacity = capacity;
+    arena->capacity = aligned_capacity;
     arena->start = (uintptr_t)arena + sizeof(*arena);
     arena->cursor = arena->start;
-    arena->end = arena->start + capacity;
+    arena->end = arena->start + aligned_capacity;
 
     return arena;
 }

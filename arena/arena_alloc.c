@@ -7,11 +7,7 @@ void *arena_alloc(arena_t *arena, size_t size) {
     assert(arena != NULL);
     assert(size > 0);
 
-    size_t aligned_size = size;
-    size_t remainder = size % ARENA_ALIGN_SIZE;
-
-    if (remainder != 0)
-        aligned_size += ARENA_ALIGN_SIZE - remainder;
+    size_t aligned_size = ARENA_ALIGN_BLOCK(size);
 
     uintptr_t next = arena->cursor + aligned_size;
     assert(next <= arena->end);
