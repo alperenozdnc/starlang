@@ -3,6 +3,6 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-bool util_does_path_exist(char *pathname) {
+bool util_does_path_exist(const char *pathname) {
     return access(pathname, F_OK) == 0; // 0 is the success code for access()
 }

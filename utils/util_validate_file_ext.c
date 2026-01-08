@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-bool util_validate_file_ext(char *pathname, char *ext) {
+bool util_validate_file_ext(const char *pathname, const char *ext) {
     char *ext_str = strrchr(pathname, '.');
 
     if (!ext_str)
