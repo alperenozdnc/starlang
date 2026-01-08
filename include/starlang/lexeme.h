@@ -1,0 +1,39 @@
+#pragma once
+
+#define GET_LEXEMES()                                                          \
+    X(LEX_EOF)                                                                 \
+    X(LEX_SEMI)                                                                \
+    X(LEX_COMMENT)                                                             \
+    X(LEX_IMPORT)                                                              \
+    X(LEX_PERIOD)                                                              \
+    X(LEX_FOR)                                                                 \
+    X(LEX_IF)                                                                  \
+    X(LEX_RET)                                                                 \
+    X(LEX_WHILE)                                                               \
+    X(LEX_WHEN)                                                                \
+    X(LEX_DECLARE)                                                             \
+    X(LEX_NOTHING)                                                             \
+                                                                               \
+    X(LEX_LPAREN)                                                              \
+    X(LEX_RPAREN)                                                              \
+    X(LEX_LBRACKET)                                                            \
+    X(LEX_RBRACKET)                                                            \
+    X(LEX_LSQUIRLY)                                                            \
+    X(LEX_RSQUIRLY)                                                            \
+                                                                               \
+    X(LEX_DQUOTE)                                                              \
+    X(LEX_QUOTE)                                                               \
+                                                                               \
+    X(LEX_EQ)                                                                  \
+    X(LEX_PLUS)                                                                \
+    X(LEX_MINUS)                                                               \
+    X(LEX_SLASH)                                                               \
+    X(LEX_MULTIPLY)                                                            \
+    X(LEX_LESS_THAN)                                                           \
+    X(LEX_GREATER_THAN)                                                        \
+                                                                               \
+    X(LEX_IDENT)                                                               \
+    X(LEX_NUM)                                                                 \
+    X(LEX_STRING)                                                              \
+    X(LEX_TRUE)                                                                \
+    X(LEX_FALSE)
