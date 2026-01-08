@@ -72,4 +72,7 @@ typedef struct {
     size_t lexeme_count;
 } lexer_t;
 
+/*
+ * initalizes a lexer instance.
+ */
 lexer_t *lexer_init(arena_t *arena);
