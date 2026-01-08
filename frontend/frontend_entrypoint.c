@@ -4,7 +4,7 @@
 
 #include <stdio.h>
 
-bool frontend_entrypoint(char *filename) {
+bool frontend_entrypoint(const char *filename) {
     FILE *file = fopen(filename, "r");
     size_t file_size = util_get_file_size(file);
 
