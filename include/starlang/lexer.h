@@ -9,44 +9,20 @@
  * the enum that lists all lexeme types.
  */
 typedef enum {
-    LEX_EOF,
-    LEX_SEMI,
-    LEX_COMMENT,
-    LEX_IMPORT,
-    LEX_PERIOD,
-
-    LEX_FOR,
-    LEX_IF,
-    LEX_RET,
-    LEX_WHILE,
-    LEX_WHEN,
-    LEX_DECLARE,
-    LEX_NOTHING,
-
-    LEX_LPAREN,
-    LEX_RPAREN,
-    LEX_LBRACKET,
-    LEX_RBRACKET,
-    LEX_LSQUIRLY,
-    LEX_RSQUIRLY,
-
-    LEX_DQUOTE,
-    LEX_QUOTE,
-
-    LEX_EQ,
-    LEX_PLUS,
-    LEX_MINUS,
-    LEX_SLASH,
-    LEX_MULTIPLY,
-    LEX_LESS_THAN,
-    LEX_GREATER_THAN,
-
-    LEX_IDENT,
-    LEX_NUM,
-    LEX_STRING,
-    LEX_TRUE,
-    LEX_FALSE
+#define X(name) name,
+#include <starlang/lexeme.def>
+#undef X
 } lexeme_type_t;
+
+static inline const char *lexeme_to_str(lexeme_type_t t) {
+    static const char *table[] = {
+#define X(name) #name,
+#include <starlang/lexeme.def>
+#undef X
+    };
+
+    return table[t];
+}
 
 /*
  * the struct that holds all the information about a lexeme.
