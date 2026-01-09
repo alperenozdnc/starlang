@@ -4,7 +4,7 @@
 ## These are multiple line comments,
 and should be ignored too. ##
 
-import starlang>io.st;
+@import starlang>io.st;
 
 decl func(): nothing {
     for (mut int x = 0; x < 1000; x++) {
