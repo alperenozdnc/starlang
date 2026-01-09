@@ -4,7 +4,18 @@
 
 #include <ezcli.h> // my project too, see in github
 
+static bool did_run_main_opt = false;
+
 ret_e main_opt_body(CLI_IGNORE_CTX, char *pathname) {
+    if (did_run_main_opt) {
+        FRONTEND_PRINT(FRONTEND_ERR, FRONTEND_PRINT_PREFIX,
+                       "interpreter can only execute a single file at a time.");
+
+        return RET_FAIL;
+    }
+
+    did_run_main_opt = true;
+
     if (!util_does_path_exist(pathname)) {
         FRONTEND_PRINT(FRONTEND_ERR, FRONTEND_PRINT_PREFIX,
                        "path '%s' doesn't exist on disk.", pathname);
