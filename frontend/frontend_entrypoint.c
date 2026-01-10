@@ -1,3 +1,4 @@
+#include "starlang/replacer.h"
 #include <starlang/arena.h>
 #include <starlang/frontend.h>
 #include <starlang/utils.h>
@@ -11,7 +12,7 @@ bool frontend_entrypoint(const char *filename) {
     arena_t *frontend_arena = arena_init(file_size);
     char *buf = util_read_file_into_arena(frontend_arena, file);
 
-    printf("%s", buf);
+    replacer(buf, file_size - 1);
 
     arena_free(frontend_arena);
     fclose(file);
