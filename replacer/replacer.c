@@ -9,6 +9,19 @@
 #include <stdlib.h>
 #include <string.h>
 
+// detects @import statements, throws on improper syntax -> done
+// collects names of dependencies imports ask for, throws on improper syntax ->
+// verifies imported namespaces exist in the .starnmspc file ->
+// verifies declared namespaces exist on disk ->
+// verifies imported files exists on namespace ->
+// loads namespaces and redoes the process if they have any imports ->
+// globally keeping track of all imports and making sure not to reimport
+// anything in scope, then finally writes to a final string after all
+// dependencies have been stripped down to their root (the file you get after
+// going import by import into a file that has no imports) ->
+// also makes sure no line/col/filename information is lost after passing the
+// final output string to the lexer by also passing 'file start offsets' ->
+
 void replacer(const char *content, size_t len) {
     arena_t *replacer_arena = arena_init(4096);
     size_t cursor = 0;
