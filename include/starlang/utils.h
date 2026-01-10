@@ -44,3 +44,9 @@ char *util_read_file_into_arena(arena_t *arena, FILE *f);
  */
 char *util_read_line(arena_t *arena, const char *buf, size_t buf_len,
                      size_t *start_idx);
+
+/*
+ * checks if a string ends with suffix string `suffix`. returns a boolean value
+ * based on success.
+ */
+bool util_does_str_end_with_suffix(char *str, char *suffix);
