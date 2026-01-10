@@ -35,3 +35,10 @@ bool frontend_entrypoint(const char *filename);
  * initializes a cli instance.
  */
 void frontend_cli(int argc, char *argv[]);
+
+/*
+ * prints the offending line for an error, and draws carets under it that point
+ * to the offending characters.
+ */
+void frontend_prettyprint_errpos(char *line_str, size_t line_count, size_t col,
+                                 size_t point_len);
