@@ -18,7 +18,7 @@ char *util_read_file_into_arena(arena_t *arena, FILE *f) {
         return NULL;
     }
 
-    buf[file_size] = '\0';
+    buf[file_size - 1] = '\0';
 
     return buf;
 }
