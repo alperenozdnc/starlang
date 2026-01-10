@@ -1,4 +1,3 @@
-#pragma once
 
 #include <starlang/arena.h>
 
@@ -37,3 +36,11 @@ ssize_t util_get_file_size(FILE *f);
  * strdup's a file's content into a given arena.
  */
 char *util_read_file_into_arena(arena_t *arena, FILE *f);
+
+/*
+ * reads all of the characters before a `\n` or a `\0` is seen, and returns them
+ * in a string. starts from `start_idx`. automatically mutates `start_idx` to
+ * the next line.
+ */
+char *util_read_line(arena_t *arena, const char *buf, size_t buf_len,
+                     size_t *start_idx);
