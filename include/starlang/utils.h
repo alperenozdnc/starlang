@@ -50,4 +50,21 @@ char *util_read_line(arena_t *arena, const char *buf, size_t buf_len,
  * checks if a string ends with suffix string `suffix`. returns a boolean value
  * based on success.
  */
-bool util_does_str_end_with_suffix(char *str, char *suffix);
+bool util_does_str_end_with_suffix(const char *str, char *suffix);
+
+// enum for deciding which kinds of characters to whitelist
+typedef enum {
+    CHAR_ALPHA = 1 << 0,
+    CHAR_DIGIT = 1 << 1,
+    CHAR_SYMBOL = 1 << 2
+} char_whitelist_t;
+
+/*
+ * enforces a matching rule over every character in string `str` with regards to
+ * exceptions. exceptions should be any character that would normally fail if
+ * only looking at `whitelist`, but needs to be allowed. `exceptions` must be
+ * `NULL` terminated. returns the offending character if any is found, returns
+ * '\0' otherwise. `char_whitelist_t` values are to be used with bit masking.
+ */
+char util_enforce_str_rules(char *str, size_t len, char_whitelist_t whitelist,
+                            char exceptions[]);
