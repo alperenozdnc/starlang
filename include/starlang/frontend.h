@@ -13,6 +13,16 @@
     cliprint(code, prefix, msg,                                                \
              ##__VA_ARGS__) // '##' makes var args not required
 
+#define FRONTEND_THROW_ERR_WITH_POS(line_str, line, col, len, msg, ...)        \
+    do {                                                                       \
+        frontend_prettyprint_errpos(line_str, line, col, len);                 \
+                                                                               \
+        FRONTEND_PRINT(FRONTEND_ERR, FRONTEND_PRINT_PREFIX, msg,               \
+                       ##__VA_ARGS__);                                         \
+                                                                               \
+        exit(EXIT_FAILURE);                                                    \
+    } while (0);
+
 /*
  * interprets starlang code in given filename. returns boolean based on success.
  */
