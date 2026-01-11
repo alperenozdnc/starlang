@@ -110,6 +110,4 @@ void replacer(const char *content, size_t len) {
     }
 
     arena_free(replacer_arena);
-
-    return;
 }
