@@ -38,14 +38,17 @@ void replacer(const char *content, size_t len) {
 
     while ((line = util_read_line(replacer_arena, content, len, &line_len,
                                   &lines_size, &cursor_pos)) != NULL) {
-        char *action_start = strchr(line, '@');
+        char *action_start = strchr(line, REPLACER_ACTION_SYMBOL);
 
-        bool is_empty = line_len == 0;
-        bool is_comment =
-            line[0] == '#' || util_does_str_end_with_suffix(line, "##");
-        bool isnt_action = !action_start;
+        if (line_len == 0)
+            continue;
 
-        if (is_empty || is_comment || isnt_action)
+        if (line[0] == STARLANG_COMMENT_SYMBOL ||
+            util_does_str_end_with_suffix(line,
+                                          STARLANG_MULTILINE_COMMENT_SYMBOL))
+            continue;
+
+        if (!action_start)
             continue;
 
         size_t action_idx = 0;
