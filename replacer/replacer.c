@@ -23,7 +23,7 @@
 // final output string to the lexer by also passing 'file start offsets' ->
 
 void replacer(const char *content, size_t len) {
-    arena_t *replacer_arena = arena_init(4096);
+    arena_t *replacer_arena = arena_init(len);
 
     size_t cursor_pos = 0;
     size_t lines_size = 0;
