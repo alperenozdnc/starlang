@@ -2,8 +2,8 @@
 
 #include <stddef.h>
 
-#define REPLACER_ACTION_SYMBOL "@"
-#define REPLACER_IMPORT_ACTION REPLACER_ACTION_SYMBOL "import"
+#define REPLACER_ACTION_SYMBOL '@'
+#define REPLACER_IMPORT_ACTION "@import"
 
 /*
  * the replacer routine - resolves namespaces and imports. the name comes
