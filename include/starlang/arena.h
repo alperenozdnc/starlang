@@ -46,3 +46,8 @@ void arena_free(arena_t *arena);
  * resets an arena instance.
  */
 void arena_reset(arena_t *arena);
+
+/*
+ * returns the remaining (available to use) bytes for an arena.
+ */
+size_t arena_remaining(arena_t *arena);
