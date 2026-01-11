@@ -13,12 +13,12 @@
 /*
  * struct for keeping information about an arena instance
  */
-typedef struct {
+typedef struct arena_t {
     size_t capacity;
 
-    uintptr_t start;
-    uintptr_t cursor;
-    uintptr_t end;
+    uintptr_t start, cursor, end;
+
+    struct arena_t *next;
 } arena_t;
 
 /*
@@ -31,11 +31,6 @@ arena_t *arena_init(size_t capacity);
  * beginning of that space.
  */
 void *arena_alloc(arena_t *arena, size_t size);
-
-/*
- * resizes a given arena `arena` to a given size `size`.
- */
-void arena_resize(arena_t *arena, size_t size);
 
 /*
  * frees an arena instance.

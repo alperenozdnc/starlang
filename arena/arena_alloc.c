@@ -1,7 +1,9 @@
 #include <starlang/arena.h>
 
 #include <assert.h>
+#include <stdbool.h>
 #include <stdio.h>
+#include <sys/param.h>
 
 void *arena_alloc(arena_t *arena, size_t size) {
     assert(arena != NULL);
@@ -9,10 +11,33 @@ void *arena_alloc(arena_t *arena, size_t size) {
 
     size_t aligned_size = ARENA_ALIGN_BLOCK(size);
 
-    uintptr_t next = arena->cursor + aligned_size;
-    assert(next <= arena->end);
+    arena_t *prev_node = NULL;
+    arena_t *node = arena;
 
-    arena->cursor = next;
+    while (node != NULL) {
+        uintptr_t next = node->cursor + aligned_size;
 
-    return (void *)arena->cursor - aligned_size;
+        if (next > node->end) {
+            prev_node = node;
+            node = node->next;
+
+            continue;
+        }
+
+        node->cursor = next;
+
+        return (void *)(node->cursor - aligned_size);
+    }
+
+    size_t node_size = MAX(prev_node->capacity * 2, aligned_size);
+    arena_t *next = arena_init(node_size);
+    prev_node->next = next;
+
+    if (!next)
+        return NULL;
+
+    uintptr_t ptr = next->start;
+    next->cursor = ptr + aligned_size;
+
+    return (void *)ptr;
 }

@@ -16,6 +16,7 @@ arena_t *arena_init(size_t capacity) {
     arena->start = (uintptr_t)arena + sizeof(*arena);
     arena->cursor = arena->start;
     arena->end = arena->start + aligned_capacity;
+    arena->next = NULL;
 
     return arena;
 }
