@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-nmspc_decl_t **replacer_get_namespace_decl(arena_t *arena) {
+nmspc_decl_t **replacer_get_nmspc_decl(arena_t *arena) {
     FILE *decl_fptr = fopen("./spec/.starnmspc", "r"); // todo: stop hardcoding
 
     if (!decl_fptr) {

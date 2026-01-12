@@ -26,7 +26,7 @@ void replacer_compile_gnt(arena_t *arena, nmspc_decl_t **decl,
                                        lhs_len);
 
         nmspc_module_t *dep_info =
-            replacer_build_namespace_and_module(arena, rhs, rhs_len);
+            replacer_build_nmspc_and_module(arena, rhs, rhs_len);
 
         replacer_enforce_import_grammar(line, lines_size, dep_info->namespace,
                                         dep_info->module, lhs_len);

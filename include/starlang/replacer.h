@@ -56,9 +56,8 @@ void replacer_enforce_import_syntax(char *line, size_t lines_size,
  * enforced statement. this is to be used after `replacer_enforce_import_syntax`
  * and right before `replacer_enforce_import_grammar`.
  */
-nmspc_module_t *replacer_build_namespace_and_module(arena_t *arena,
-                                                    const char *rhs,
-                                                    size_t rhs_len);
+nmspc_module_t *replacer_build_nmspc_and_module(arena_t *arena, const char *rhs,
+                                                size_t rhs_len);
 /*
  * enforces grammar for the right hand side of an action statement
  * (namespace>module.st). this checks the statement for correct letter usage
@@ -85,7 +84,7 @@ void replacer_print_ref_gnt();
  * reads all namespace declarations from the namespace file (`.starnmspc`). this
  * is used to resolve `@import` statements at the filesystem.
  */
-nmspc_decl_t **replacer_get_namespace_decl(arena_t *arena);
+nmspc_decl_t **replacer_get_nmspc_decl(arena_t *arena);
 
 /*
  * this builds a node that belongs to a GNT (generated namespace tree) from the

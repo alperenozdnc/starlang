@@ -3,9 +3,8 @@
 #include <stdbool.h>
 #include <string.h>
 
-nmspc_module_t *replacer_build_namespace_and_module(arena_t *arena,
-                                                    const char *rhs,
-                                                    size_t rhs_len) {
+nmspc_module_t *replacer_build_nmspc_and_module(arena_t *arena, const char *rhs,
+                                                size_t rhs_len) {
     size_t max_ident_size = rhs_len + 1; // +1 for \0
 
     nmspc_module_t *info = arena_alloc(arena, sizeof(*info));
