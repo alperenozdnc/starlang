@@ -66,8 +66,8 @@ typedef enum {
  * `NULL` terminated. returns the offending character if any is found, returns
  * '\0' otherwise. `char_whitelist_t` values are to be used with bit masking.
  */
-char util_enforce_str_rules(char *str, size_t len, char_whitelist_t whitelist,
-                            char exceptions[]);
+char util_enforce_str_rules(const char *str, size_t len,
+                            char_whitelist_t whitelist, char exceptions[]);
 
 /*
  * builds an arbitrary amount of strings passed as arguments into one whole
