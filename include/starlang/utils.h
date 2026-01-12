@@ -76,4 +76,9 @@ char util_enforce_str_rules(char *str, size_t len, char_whitelist_t whitelist,
  */
 char *_util_build_str(arena_t *arena, ...);
 
+/*
+ * counts the amount of lines in a file.
+ */
+size_t util_count_lines(FILE *fptr);
+
 #define util_build_str(arena, ...) _util_build_str(arena, __VA_ARGS__, NULL)
