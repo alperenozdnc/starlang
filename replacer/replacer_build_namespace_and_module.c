@@ -1,7 +1,6 @@
 #include <starlang/replacer.h>
 
 #include <stdbool.h>
-#include <stddef.h>
 #include <string.h>
 
 nmspc_module_t *replacer_build_namespace_and_module(arena_t *arena,

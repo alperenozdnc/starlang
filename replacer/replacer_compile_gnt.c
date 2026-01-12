@@ -1,5 +1,4 @@
 #include <starlang/arena.h>
-#include <starlang/def.h>
 #include <starlang/replacer.h>
 #include <starlang/utils.h>
 
