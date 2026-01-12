@@ -1,2 +1,2 @@
-namespace -> ./namespace/
-starlang -> ./starlang/
+namespace:namespace/
+starlang:starlang/
