@@ -68,3 +68,12 @@ typedef enum {
  */
 char util_enforce_str_rules(char *str, size_t len, char_whitelist_t whitelist,
                             char exceptions[]);
+
+/*
+ * builds an arbitrary amount of strings passed as arguments into one whole
+ * string. you should use the `util_build_str` macro instead of using this
+ * directly.
+ */
+char *_util_build_str(arena_t *arena, ...);
+
+#define util_build_str(arena, ...) _util_build_str(arena, __VA_ARGS__, NULL)
