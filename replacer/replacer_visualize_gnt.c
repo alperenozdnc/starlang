@@ -2,16 +2,13 @@
 
 #include <stdio.h>
 
-void replacer_visualize_gnt(nmspc_node_t *root) {
+void replacer_visualize_gnt(nmspc_node_t *root, size_t depth) {
     if (root->parent) {
-        printf("\n    ");
+        printf("\n");
     }
 
-    if (root->children[0]) {
-        printf("[");
-    } else {
-        printf("(");
-    }
+    printf("%*s", (int)depth * 4, " ");
+    fflush(stdout);
 
     printf("%s/%s", root->namespace, root->module);
 
@@ -22,17 +19,11 @@ void replacer_visualize_gnt(nmspc_node_t *root) {
     size_t i = 0;
 
     while (root->children[i]) {
-        replacer_visualize_gnt(root->children[i++]);
+        replacer_visualize_gnt(root->children[i++], depth + 1);
     }
 
     if (!root->parent) {
         printf("\n");
-    }
-
-    if (root->children[0]) {
-        printf("]");
-    } else {
-        printf(")");
     }
 
     if (!root->children[0]) {

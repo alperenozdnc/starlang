@@ -35,8 +35,8 @@ void replacer_print_ref_gnt() {
     root->children[2] = NULL;
     root->parent = NULL;
 
-    printf("\n-----REFERENCE-------\n");
-    replacer_visualize_gnt(root);
+    printf("\n-----REFERENCE-------\n\n");
+    replacer_visualize_gnt(root, 0);
     printf("\n");
 
     arena_free(tree_arena);

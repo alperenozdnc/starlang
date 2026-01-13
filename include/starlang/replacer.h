@@ -69,9 +69,10 @@ void replacer_enforce_import_grammar(const char *line, size_t line_idx,
 
 /*
  * this rough helper visualizes a generated namespace tree. see comments for
- * `nmspc_node_t` for more information.
+ * `nmspc_node_t` for more information. depth should be passed as 0 if not
+ * recursing.
  */
-void replacer_visualize_gnt(nmspc_node_t *root);
+void replacer_visualize_gnt(nmspc_node_t *root, size_t depth);
 
 /*
  * this creates a mock GNT (generated namespace tree) and visualizes it.
