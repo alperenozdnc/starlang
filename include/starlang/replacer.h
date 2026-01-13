@@ -17,9 +17,19 @@ typedef struct nmspc_node_t {
     const char *path;
 
     struct nmspc_node_t *parent;
-    struct nmspc_node_t **children;
-    size_t children_count;
 } nmspc_node_t;
+
+/* struct for holding a namespace node as a link in a linked list. */
+typedef struct nmspc_link_t {
+    nmspc_node_t *self;
+
+    struct nmspc_link_t *next;
+
+    struct nmspc_link_t *children;
+    struct nmspc_link_t *tail;
+
+    bool visualizer_visited; // tmp value until replacer fully works
+} nmspc_link_t;
 
 /* struct for holding information about a statement's namespace and module
    dependencies. */
@@ -72,14 +82,7 @@ void replacer_enforce_import_grammar(const char *line, size_t line_idx,
  * `nmspc_node_t` for more information. depth should be passed as 0 if not
  * recursing.
  */
-void replacer_visualize_gnt(nmspc_node_t *root, size_t depth);
-
-/*
- * this creates a mock GNT (generated namespace tree) and visualizes it.
- * this is to compare against the tree generated from reading `spec/main.st`
- * and is only a 'sanity' checker, which means its only temporary.
- */
-void replacer_print_ref_gnt();
+void replacer_visualize_gnt(nmspc_link_t *root, size_t depth);
 
 /*
  * reads all namespace declarations from the namespace file (`.starnmspc`). this
@@ -92,7 +95,7 @@ nmspc_decl_t **replacer_get_nmspc_decl(arena_t *arena);
  * given namespace and module names from a statement. it compares against the
  * declarations present in `**declarations` and verifies filesystem existence.
  */
-nmspc_node_t *replacer_get_nmspc_node(arena_t *arena, nmspc_node_t *parent_node,
+nmspc_link_t *replacer_get_nmspc_link(arena_t *arena, nmspc_node_t *parent_node,
                                       nmspc_decl_t **declarations,
                                       const char *namespace,
                                       const char *module);
@@ -101,7 +104,7 @@ nmspc_node_t *replacer_get_nmspc_node(arena_t *arena, nmspc_node_t *parent_node,
  * generates the root node for a GNT (generated namespace tree). `module` is the
  * file that the interpreter was called on.
  */
-nmspc_node_t *replacer_init_gnt(arena_t *arena, const char *module);
+nmspc_link_t *replacer_init_gnt(arena_t *arena, const char *module);
 
 /*
  * generates a GNT (generated namespace tree) by recursively compiling import
@@ -110,9 +113,8 @@ nmspc_node_t *replacer_init_gnt(arena_t *arena, const char *module);
  * arrays
  */
 void replacer_compile_gnt(arena_t *arena, nmspc_decl_t **decl,
-                          nmspc_node_t *parent_node, const char *content,
+                          nmspc_link_t *parent, const char *content,
                           size_t content_len);
-
 /*
  * the replacer routine - resolves namespaces and imports. the name comes
  * because this is essentially doing text replacement for the imports, but

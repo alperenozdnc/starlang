@@ -6,7 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 
-nmspc_node_t *replacer_get_nmspc_node(arena_t *arena, nmspc_node_t *parent_node,
+nmspc_link_t *replacer_get_nmspc_link(arena_t *arena, nmspc_node_t *parent_node,
                                       nmspc_decl_t **declarations,
                                       const char *namespace,
                                       const char *module) {
@@ -45,7 +45,10 @@ nmspc_node_t *replacer_get_nmspc_node(arena_t *arena, nmspc_node_t *parent_node,
     if (!path)
         return NULL;
 
+    nmspc_link_t *link = arena_alloc(arena, sizeof(*link));
     nmspc_node_t *node = arena_alloc(arena, sizeof(*node));
+
+    memset(link, 0, sizeof(*link));
     memset(node, 0, sizeof(*node));
 
     node->parent = parent_node;
@@ -53,8 +56,10 @@ nmspc_node_t *replacer_get_nmspc_node(arena_t *arena, nmspc_node_t *parent_node,
     node->module = module;
     node->path = path;
 
-    node->children = malloc(sizeof(nmspc_node_t *));
-    node->children[0] = NULL;
+    link->self = node;
+    link->tail = NULL;
+    link->children = NULL;
+    link->next = NULL;
 
-    return node;
+    return link;
 }

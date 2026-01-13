@@ -6,22 +6,22 @@
 #include <stdlib.h>
 #include <string.h>
 
-void replacer_append_child_to_node(nmspc_node_t *parent, nmspc_node_t *child) {
-    // todo: use a linked list instead of an array which is better at
-    // fitting inside arena constraints
+void replacer_append_child_to_link(nmspc_link_t *parent, nmspc_link_t *child) {
+    if (parent->children) {
+        parent->tail->next = child;
+        parent->tail = child;
 
-    parent->children_count++;
+        return;
+    }
 
-    parent->children =
-        realloc(parent->children,
-                sizeof(nmspc_node_t *) * (parent->children_count + 1));
+    parent->children = child;
+    parent->tail = child;
 
-    parent->children[parent->children_count - 1] = child;
-    parent->children[parent->children_count] = NULL;
+    return;
 }
 
 void replacer_compile_gnt(arena_t *arena, nmspc_decl_t **decl,
-                          nmspc_node_t *parent_node, const char *content,
+                          nmspc_link_t *parent, const char *content,
                           size_t content_len) {
     size_t cursor_pos = 0;
     size_t lines_size = 0;
@@ -48,18 +48,18 @@ void replacer_compile_gnt(arena_t *arena, nmspc_decl_t **decl,
         replacer_enforce_import_grammar(line, lines_size, dep_info->namespace,
                                         dep_info->module, lhs_len);
 
-        nmspc_node_t *node = replacer_get_nmspc_node(
-            arena, parent_node, decl, dep_info->namespace, dep_info->module);
+        nmspc_link_t *link = replacer_get_nmspc_link(
+            arena, parent->self, decl, dep_info->namespace, dep_info->module);
 
-        replacer_append_child_to_node(parent_node, node);
+        replacer_append_child_to_link(parent, link);
 
-        FILE *f = fopen(node->path, "r");
+        FILE *f = fopen(link->self->path, "r");
         assert(f != NULL);
 
         size_t file_size = util_get_file_size(f);
         char *file_content = util_read_file_into_arena(arena, f);
 
-        replacer_compile_gnt(arena, decl, node, file_content, file_size);
+        replacer_compile_gnt(arena, decl, link, file_content, file_size);
 
         fclose(f);
     }
