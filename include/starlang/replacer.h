@@ -91,9 +91,17 @@ void replacer_visualize_gnt(nmspc_link_t *root, size_t depth);
 nmspc_decl_t **replacer_get_nmspc_decl(arena_t *arena);
 
 /*
- * this builds a node that belongs to a GNT (generated namespace tree) from the
- * given namespace and module names from a statement. it compares against the
- * declarations present in `**declarations` and verifies filesystem existence.
+ * initializes a namespace link with the given values.
+ */
+nmspc_link_t *replacer_init_nmspc_link(arena_t *arena, nmspc_node_t *parent,
+                                       const char *path, const char *namespace,
+                                       const char *module);
+
+/*
+ * this builds a node that belongs to a GNT (generated namespace tree) from
+ * the given namespace and module names from a statement. it compares
+ * against the declarations present in `**declarations` and verifies
+ * filesystem existence.
  */
 nmspc_link_t *replacer_get_nmspc_link(arena_t *arena, nmspc_node_t *parent_node,
                                       nmspc_decl_t **declarations,
@@ -101,16 +109,16 @@ nmspc_link_t *replacer_get_nmspc_link(arena_t *arena, nmspc_node_t *parent_node,
                                       const char *module);
 
 /*
- * generates the root node for a GNT (generated namespace tree). `module` is the
- * file that the interpreter was called on.
+ * generates the root node for a GNT (generated namespace tree). `module` is
+ * the file that the interpreter was called on.
  */
 nmspc_link_t *replacer_init_gnt(arena_t *arena, const char *module);
 
 /*
- * generates a GNT (generated namespace tree) by recursively compiling import
- * dependencies of module. each branch ends at the module that imports to other
- * modules. todo: deduplicate imports, use linked lists for children instead of
- * arrays
+ * generates a GNT (generated namespace tree) by recursively compiling
+ * import dependencies of module. each branch ends at the module that
+ * imports to other modules. todo: deduplicate imports, use linked lists for
+ * children instead of arrays
  */
 void replacer_compile_gnt(arena_t *arena, nmspc_decl_t **decl,
                           nmspc_link_t *parent, const char *content,
