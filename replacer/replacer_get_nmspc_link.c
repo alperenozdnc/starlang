@@ -45,22 +45,8 @@ nmspc_link_t *replacer_get_nmspc_link(arena_t *arena, nmspc_node_t *parent_node,
     if (!path)
         return NULL;
 
-    nmspc_link_t *link = arena_alloc(arena, sizeof(*link));
-    nmspc_node_t *node = arena_alloc(arena, sizeof(*node));
-
-    memset(link, 0, sizeof(*link));
-    memset(node, 0, sizeof(*node));
-
-    node->parent = parent_node;
-    node->namespace = namespace;
-    node->module = module;
-    node->path = path;
-
-    link->self = node;
-    link->tail = NULL;
-    link->children = NULL;
-    link->next = NULL;
-    link->visualizer_visited = false;
+    nmspc_link_t *link =
+        replacer_init_nmspc_link(arena, parent_node, path, namespace, module);
 
     return link;
 }
