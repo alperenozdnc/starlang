@@ -60,6 +60,7 @@ nmspc_link_t *replacer_get_nmspc_link(arena_t *arena, nmspc_node_t *parent_node,
     link->tail = NULL;
     link->children = NULL;
     link->next = NULL;
+    link->visualizer_visited = false;
 
     return link;
 }

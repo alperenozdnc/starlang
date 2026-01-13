@@ -18,6 +18,7 @@ nmspc_link_t *replacer_init_gnt(arena_t *arena, const char *module) {
     gnt_link->children = NULL;
     gnt_link->next = NULL;
     gnt_link->tail = NULL;
+    gnt_link->visualizer_visited = false;
 
     return gnt_link;
 }
