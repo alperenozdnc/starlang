@@ -143,6 +143,29 @@ nmspc_link_t *replacer_init_gnt(arena_t *arena, const char *module);
 void replacer_compile_gnt(arena_t *arena, nmspc_decl_t **decl,
                           nmspc_link_t *root, nmspc_link_t *parent,
                           const char *content, size_t content_len);
+
+/*
+ * counts every link inside of a GNT (generated namespace tree) recursively.
+ * since this takes `link_count` with an initial value of 0 which must not be in
+ * a variable yet, the `replacer_get_gnt_link_count` macro should be used
+ * instead for clearer code intent.
+ */
+size_t _replacer_get_gnt_link_count(nmspc_link_t *parent, size_t link_count);
+
+#define replacer_get_gnt_link_count(gnt) _replacer_get_gnt_link_count(gnt, 0)
+
+/*
+ * flattens a GNT (generated namespace tree) into a set of links in a manner
+ * where every dependency has its sub-dependencies in scope.
+ */
+nmspc_link_t **replacer_flatten_gnt(arena_t *arena, nmspc_link_t *gnt,
+                                    size_t link_count);
+
+/*
+ * prints a flattened GNT (generated namespace tree).
+ */
+void replacer_debug_print_flat_gnt(nmspc_link_t **gnt_flat, size_t link_count);
+
 /*
  * the replacer routine - resolves namespaces and imports. the name comes
  * because this is essentially doing text replacement for the imports, but
