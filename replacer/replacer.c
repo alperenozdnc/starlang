@@ -18,5 +18,12 @@ void replacer(const char *content, size_t len) {
 
     printf("---------------------\n");
 
+    size_t link_count = replacer_get_gnt_link_count(gnt);
+
+    nmspc_link_t **gnt_flat =
+        replacer_flatten_gnt(replacer_arena, gnt, link_count);
+
+    replacer_debug_print_flat_gnt(gnt_flat, link_count);
+
     arena_free(replacer_arena);
 }
