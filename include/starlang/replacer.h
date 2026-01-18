@@ -78,6 +78,28 @@ void replacer_enforce_import_grammar(const char *line, size_t line_idx,
                                      size_t lhs_len);
 
 /*
+ * compares all nodes in a - usually incomplete - GNT (generated namespace tree)
+ * to the given dependency info (namespace and module) and returns a boolean
+ * value based on if it doesn't exist anywhere in the GNT.
+ */
+bool replacer_is_dep_uniq(nmspc_link_t *head, nmspc_module_t *dep_info);
+
+/*
+ * enforces that a dependency doesn't import itself in it's own dependency graph
+ * by comparing the currently compiled namespace and module information against
+ * the parent's.
+ */
+void replacer_enforce_no_self_import(char *line, size_t line_idx,
+                                     size_t line_len, nmspc_link_t *parent,
+                                     nmspc_module_t *dep_info);
+
+/*
+ * appends a child link into its parent link. this helper assumes that the link
+ * to be appended is verified to be unique and non-cyclic.
+ */
+void replacer_append_child_to_link(nmspc_link_t *parent, nmspc_link_t *child);
+
+/*
  * this rough helper visualizes a generated namespace tree. see comments for
  * `nmspc_node_t` for more information. depth should be passed as 0 if not
  * recursing.
@@ -121,8 +143,8 @@ nmspc_link_t *replacer_init_gnt(arena_t *arena, const char *module);
  * children instead of arrays
  */
 void replacer_compile_gnt(arena_t *arena, nmspc_decl_t **decl,
-                          nmspc_link_t *parent, const char *content,
-                          size_t content_len);
+                          nmspc_link_t *root, nmspc_link_t *parent,
+                          const char *content, size_t content_len);
 /*
  * the replacer routine - resolves namespaces and imports. the name comes
  * because this is essentially doing text replacement for the imports, but
