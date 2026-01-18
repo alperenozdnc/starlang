@@ -4,6 +4,7 @@
 ## These are multiple line comments,
 and should be ignored too. ##
 
+@import namespace>module_two.st;
 @import starlang>io.st;
 @import namespace>module.st;
 
