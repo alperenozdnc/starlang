@@ -21,7 +21,6 @@ nmspc_link_t *replacer_init_nmspc_link(arena_t *arena, nmspc_node_t *parent,
     link->children = NULL;
     link->next = NULL;
     link->tail = NULL;
-    link->visualizer_visited = false;
 
     return link;
 }
