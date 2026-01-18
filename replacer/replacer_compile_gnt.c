@@ -6,23 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-void replacer_append_child_to_link(nmspc_link_t *parent, nmspc_link_t *child) {
-    if (parent->children) {
-        parent->tail->next = child;
-        parent->tail = child;
-
-        return;
-    }
-
-    parent->children = child;
-    parent->tail = child;
-
-    return;
-}
-
 void replacer_compile_gnt(arena_t *arena, nmspc_decl_t **decl,
-                          nmspc_link_t *parent, const char *content,
-                          size_t content_len) {
+                          nmspc_link_t *root, nmspc_link_t *parent,
+                          const char *content, size_t content_len) {
     size_t cursor_pos = 0;
     size_t lines_size = 0;
     size_t line_len = 0;
@@ -48,6 +34,12 @@ void replacer_compile_gnt(arena_t *arena, nmspc_decl_t **decl,
         replacer_enforce_import_grammar(line, lines_size, dep_info->namespace,
                                         dep_info->module, lhs_len);
 
+        replacer_enforce_no_self_import(line, lines_size, line_len, parent,
+                                        dep_info);
+
+        if (!replacer_is_dep_uniq(root, dep_info))
+            return;
+
         nmspc_link_t *link = replacer_get_nmspc_link(
             arena, parent->self, decl, dep_info->namespace, dep_info->module);
 
@@ -59,7 +51,7 @@ void replacer_compile_gnt(arena_t *arena, nmspc_decl_t **decl,
         size_t file_size = util_get_file_size(f);
         char *file_content = util_read_file_into_arena(arena, f);
 
-        replacer_compile_gnt(arena, decl, link, file_content, file_size);
+        replacer_compile_gnt(arena, decl, root, link, file_content, file_size);
 
         fclose(f);
     }
