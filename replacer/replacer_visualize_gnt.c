@@ -3,11 +3,6 @@
 #include <stdio.h>
 
 void replacer_visualize_gnt(nmspc_link_t *root, size_t depth) {
-    if (root->visualizer_visited)
-        return;
-
-    root->visualizer_visited = true;
-
     if (root->self->parent) {
         printf("\n");
     }

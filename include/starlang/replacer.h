@@ -27,8 +27,6 @@ typedef struct nmspc_link_t {
 
     struct nmspc_link_t *children;
     struct nmspc_link_t *tail;
-
-    bool visualizer_visited; // tmp value until replacer fully works
 } nmspc_link_t;
 
 /* struct for holding information about a statement's namespace and module
