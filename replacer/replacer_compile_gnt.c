@@ -38,7 +38,7 @@ void replacer_compile_gnt(arena_t *arena, nmspc_decl_t **decl,
                                         dep_info);
 
         if (!replacer_is_dep_uniq(root, dep_info))
-            return;
+            continue;
 
         nmspc_link_t *link = replacer_get_nmspc_link(
             arena, parent->self, decl, dep_info->namespace, dep_info->module);
