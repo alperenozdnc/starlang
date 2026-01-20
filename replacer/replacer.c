@@ -11,12 +11,7 @@ void replacer(const char *content, size_t len) {
 
     // first gnt as root / second as parent information
     replacer_compile_gnt(replacer_arena, decl, gnt, gnt, content, len);
-
-    printf("\n-----ACTUAL----------\n\n");
-
     replacer_visualize_gnt(gnt, 0);
-
-    printf("---------------------\n");
 
     size_t link_count = replacer_get_gnt_link_count(gnt);
 
