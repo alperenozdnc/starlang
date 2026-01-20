@@ -165,7 +165,7 @@ nmspc_link_t **replacer_flatten_gnt(arena_t *arena, nmspc_link_t *gnt,
 /*
  * prints a flattened GNT (generated namespace tree).
  */
-void replacer_debug_print_flat_gnt(nmspc_link_t **gnt_flat, size_t link_count);
+void replacer_print_flattened_gnt(nmspc_link_t **gnt_flat, size_t link_count);
 
 /*
  * the replacer routine - resolves namespaces and imports. the name comes

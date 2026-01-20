@@ -18,7 +18,7 @@ void replacer(const char *content, size_t len) {
     nmspc_link_t **gnt_flat =
         replacer_flatten_gnt(replacer_arena, gnt, link_count);
 
-    replacer_debug_print_flat_gnt(gnt_flat, link_count);
+    replacer_print_flattened_gnt(gnt_flat, link_count);
 
     arena_free(replacer_arena);
 }
