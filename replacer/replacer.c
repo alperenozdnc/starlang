@@ -1,8 +1,6 @@
 #include <starlang/arena.h>
 #include <starlang/replacer.h>
 
-#include <stdio.h>
-
 void replacer(const char *content, size_t len) {
     arena_t *replacer_arena = arena_init(len);
 
