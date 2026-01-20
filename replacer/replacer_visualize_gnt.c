@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 
-void replacer_visualize_gnt(nmspc_link_t *root, size_t depth) {
+void _replacer_visualize_gnt(nmspc_link_t *root, size_t depth) {
     if (root->self->parent) {
         printf("\n");
     }
@@ -18,7 +18,7 @@ void replacer_visualize_gnt(nmspc_link_t *root, size_t depth) {
     nmspc_link_t *link = root->children;
 
     while (link) {
-        replacer_visualize_gnt(link, depth + 1);
+        _replacer_visualize_gnt(link, depth + 1);
 
         link = link->next;
     }

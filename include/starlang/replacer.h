@@ -102,7 +102,8 @@ void replacer_append_child_to_link(nmspc_link_t *parent, nmspc_link_t *child);
  * `nmspc_node_t` for more information. depth should be passed as 0 if not
  * recursing.
  */
-void replacer_visualize_gnt(nmspc_link_t *root, size_t depth);
+void _replacer_visualize_gnt(nmspc_link_t *root, size_t depth);
+#define replacer_visualize_gnt(root) _replacer_visualize_gnt(root, 0)
 
 /*
  * reads all namespace declarations from the namespace file (`.starnmspc`). this
