@@ -41,7 +41,8 @@ void replacer_compile_gnt(arena_t *arena, nmspc_decl_t **decl,
             continue;
 
         nmspc_link_t *link = replacer_get_nmspc_link(
-            arena, parent->self, decl, dep_info->namespace, dep_info->module);
+            arena, parent->self, decl, lines_size, line_len, line,
+            dep_info->namespace, dep_info->module);
 
         replacer_append_child_to_link(parent, link);
 

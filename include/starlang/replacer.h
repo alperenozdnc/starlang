@@ -126,7 +126,8 @@ nmspc_link_t *replacer_init_nmspc_link(arena_t *arena, nmspc_node_t *parent,
  */
 nmspc_link_t *replacer_get_nmspc_link(arena_t *arena, nmspc_node_t *parent_node,
                                       nmspc_decl_t **declarations,
-                                      const char *namespace,
+                                      size_t line_idx, size_t line_len,
+                                      const char *line, const char *namespace,
                                       const char *module);
 
 /*
