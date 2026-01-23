@@ -7,12 +7,13 @@
 #include <string.h>
 #include <unistd.h>
 
-nmspc_link_t *replacer_get_nmspc_link(arena_t *arena, nmspc_node_t *parent_node,
+nmspc_link_t *replacer_get_nmspc_link(arena_t *arena, const char *parent_path,
+                                      nmspc_node_t *parent_node,
                                       nmspc_decl_t **declarations,
                                       size_t line_idx, size_t line_len,
                                       const char *line, const char *namespace,
                                       const char *module) {
-    char *path = NULL;
+    char *link_path = NULL;
     size_t i = 0;
 
     while (declarations[i++]) {
@@ -21,8 +22,8 @@ nmspc_link_t *replacer_get_nmspc_link(arena_t *arena, nmspc_node_t *parent_node,
         if (strcmp(decl->name, namespace) != 0)
             continue;
 
-        // 'spec/' obv hardcoded for now
-        char *namespace_path_fs = util_build_str(arena, "spec/", decl->name);
+        char *namespace_path_fs =
+            util_build_str(arena, parent_path, decl->name);
         char *module_path_fs =
             util_build_str(arena, namespace_path_fs, "/", module);
 
@@ -39,12 +40,12 @@ nmspc_link_t *replacer_get_nmspc_link(arena_t *arena, nmspc_node_t *parent_node,
                                         module, namespace, line_idx);
         }
 
-        path = module_path_fs;
+        link_path = module_path_fs;
 
         break;
     }
 
-    if (path == NULL) {
+    if (link_path == NULL) {
         // +1 for making column 1-initialized
         // +1 for skipping the space after '@import'
         size_t col_start = IMPORT_ACTION_LEN + 2;
@@ -55,8 +56,8 @@ nmspc_link_t *replacer_get_nmspc_link(arena_t *arena, nmspc_node_t *parent_node,
             namespace, line_idx);
     }
 
-    nmspc_link_t *link =
-        replacer_init_nmspc_link(arena, parent_node, path, namespace, module);
+    nmspc_link_t *link = replacer_init_nmspc_link(arena, parent_node, link_path,
+                                                  namespace, module);
 
     return link;
 }

@@ -109,7 +109,7 @@ void _replacer_visualize_gnt(nmspc_link_t *root, size_t depth);
  * reads all namespace declarations from the namespace file (`.starnmspc`). this
  * is used to resolve `@import` statements at the filesystem.
  */
-nmspc_decl_t **replacer_get_nmspc_decl(arena_t *arena);
+nmspc_decl_t **replacer_get_nmspc_decl(arena_t *arena, const char *parent_path);
 
 /*
  * initializes a namespace link with the given values.
@@ -124,7 +124,8 @@ nmspc_link_t *replacer_init_nmspc_link(arena_t *arena, nmspc_node_t *parent,
  * against the declarations present in `**declarations` and verifies
  * filesystem existence.
  */
-nmspc_link_t *replacer_get_nmspc_link(arena_t *arena, nmspc_node_t *parent_node,
+nmspc_link_t *replacer_get_nmspc_link(arena_t *arena, const char *parent_path,
+                                      nmspc_node_t *parent_node,
                                       nmspc_decl_t **declarations,
                                       size_t line_idx, size_t line_len,
                                       const char *line, const char *namespace,
@@ -139,18 +140,18 @@ nmspc_link_t *replacer_init_gnt(arena_t *arena, const char *module);
 /*
  * generates a GNT (generated namespace tree) by recursively compiling
  * import dependencies of module. each branch ends at the module that
- * imports to other modules. todo: deduplicate imports, use linked lists for
- * children instead of arrays
+ * imports to other modules.
  */
-void replacer_compile_gnt(arena_t *arena, nmspc_decl_t **decl,
-                          nmspc_link_t *root, nmspc_link_t *parent,
-                          const char *content, size_t content_len);
+void replacer_compile_gnt(arena_t *arena, const char *parent_path,
+                          nmspc_decl_t **decl, nmspc_link_t *root,
+                          nmspc_link_t *parent, const char *content,
+                          size_t content_len);
 
 /*
  * counts every link inside of a GNT (generated namespace tree) recursively.
- * since this takes `link_count` with an initial value of 0 which must not be in
- * a variable yet, the `replacer_get_gnt_link_count` macro should be used
- * instead for clearer code intent.
+ * since this takes `link_count` with an initial value of 0 which must not
+ * be in a variable yet, the `replacer_get_gnt_link_count` macro should be
+ * used instead for clearer code intent.
  */
 size_t _replacer_get_gnt_link_count(nmspc_link_t *parent, size_t link_count);
 
@@ -173,4 +174,5 @@ void replacer_print_flattened_gnt(nmspc_link_t **gnt_flat, size_t link_count);
  * because this is essentially doing text replacement for the imports, but
  * not exactly.
  */
-void replacer(const char *content, size_t len);
+void replacer(const char *parent_path, const char *filename,
+              const char *content, size_t len);

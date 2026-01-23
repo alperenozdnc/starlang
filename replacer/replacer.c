@@ -1,14 +1,16 @@
 #include <starlang/arena.h>
 #include <starlang/replacer.h>
 
-void replacer(const char *content, size_t len) {
+void replacer(const char *parent_path, const char *filename,
+              const char *content, size_t len) {
     arena_t *replacer_arena = arena_init(len);
 
-    nmspc_decl_t **decl = replacer_get_nmspc_decl(replacer_arena);
-    nmspc_link_t *gnt = replacer_init_gnt(replacer_arena, "main.st");
+    nmspc_decl_t **decl = replacer_get_nmspc_decl(replacer_arena, parent_path);
+    nmspc_link_t *gnt = replacer_init_gnt(replacer_arena, filename);
 
     // first gnt as root / second as parent information
-    replacer_compile_gnt(replacer_arena, decl, gnt, gnt, content, len);
+    replacer_compile_gnt(replacer_arena, parent_path, decl, gnt, gnt, content,
+                         len);
     replacer_visualize_gnt(gnt);
 
     size_t link_count = replacer_get_gnt_link_count(gnt);

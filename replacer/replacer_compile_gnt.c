@@ -6,9 +6,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-void replacer_compile_gnt(arena_t *arena, nmspc_decl_t **decl,
-                          nmspc_link_t *root, nmspc_link_t *parent,
-                          const char *content, size_t content_len) {
+void replacer_compile_gnt(arena_t *arena, const char *parent_path,
+                          nmspc_decl_t **decl, nmspc_link_t *root,
+                          nmspc_link_t *parent, const char *content,
+                          size_t content_len) {
     size_t cursor_pos = 0;
     size_t lines_size = 0;
     size_t line_len = 0;
@@ -41,7 +42,7 @@ void replacer_compile_gnt(arena_t *arena, nmspc_decl_t **decl,
             continue;
 
         nmspc_link_t *link = replacer_get_nmspc_link(
-            arena, parent->self, decl, lines_size, line_len, line,
+            arena, parent_path, parent->self, decl, lines_size, line_len, line,
             dep_info->namespace, dep_info->module);
 
         replacer_append_child_to_link(parent, link);
@@ -52,7 +53,8 @@ void replacer_compile_gnt(arena_t *arena, nmspc_decl_t **decl,
         size_t file_size = util_get_file_size(f);
         char *file_content = util_read_file_into_arena(arena, f);
 
-        replacer_compile_gnt(arena, decl, root, link, file_content, file_size);
+        replacer_compile_gnt(arena, parent_path, decl, root, link, file_content,
+                             file_size);
 
         fclose(f);
     }

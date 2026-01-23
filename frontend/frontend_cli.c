@@ -3,6 +3,8 @@
 #include <starlang/utils.h>
 
 #include <ezcli.h> // my project too, see in github
+#include <stdlib.h>
+#include <string.h>
 
 static bool did_run_main_opt = false;
 
@@ -37,7 +39,13 @@ ret_e main_opt_body(CLI_IGNORE_CTX, char *pathname) {
                        STARLANG_FILE_EXT);
     }
 
-    if (frontend_entrypoint(pathname))
+    char *filename = strrchr(pathname, '/') + 1; // +1 skips the slash
+
+    char parent_path[256];
+    realpath(pathname, parent_path);
+    parent_path[strlen(parent_path) - strlen(filename)] = '\0';
+
+    if (frontend_entrypoint(pathname, parent_path, filename))
         return RET_NORMAL;
 
     FRONTEND_PRINT(FRONTEND_ERR, FRONTEND_PRINT_PREFIX,

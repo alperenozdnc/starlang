@@ -26,7 +26,8 @@
 /*
  * interprets starlang code in given filename. returns boolean based on success.
  */
-bool frontend_entrypoint(const char *filename);
+bool frontend_entrypoint(const char *full_path, const char *path,
+                         const char *filename);
 
 #define CLI_CMD_NAME "starlang"
 

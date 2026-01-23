@@ -5,8 +5,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-nmspc_decl_t **replacer_get_nmspc_decl(arena_t *arena) {
-    FILE *decl_fptr = fopen("./spec/.starnmspc", "r"); // todo: stop hardcoding
+nmspc_decl_t **replacer_get_nmspc_decl(arena_t *arena,
+                                       const char *parent_path) {
+    char *full_path = util_build_str(arena, parent_path, ".starnmspc");
+
+    FILE *decl_fptr = fopen(full_path, "r"); // todo: stop hardcoding
 
     if (!decl_fptr) {
         perror("fopen()");
