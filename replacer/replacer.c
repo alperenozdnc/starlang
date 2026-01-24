@@ -19,7 +19,7 @@ void replacer(const char *main_module_path, const char *parent_path,
     nmspc_link_t **gnt_flat =
         replacer_flatten_gnt(replacer_arena, gnt, link_count);
 
-    replacer_print_flattened_gnt(gnt_flat, link_count);
+    replacer_visualize_flat_gnt(gnt_flat, link_count);
 
     arena_free(replacer_arena);
 }

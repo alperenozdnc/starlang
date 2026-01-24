@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void replacer_print_flattened_gnt(nmspc_link_t **gnt_flat, size_t link_count) {
+void replacer_visualize_flat_gnt(nmspc_link_t **gnt_flat, size_t link_count) {
     printf("the flattened GNT, showing all dependencies ordered in a way such "
            "that, going from left to \n"
            "right, no dependency doesn't have access to any subdependency it \n"
