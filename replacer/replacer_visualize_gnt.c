@@ -6,13 +6,17 @@
 void _replacer_visualize_gnt(nmspc_link_t *root, size_t depth) {
     if (root->self->parent) {
         printf("\n");
+    } else {
+        printf("the GNT (generated namespace tree) showing relations between "
+               "all dependencies and their sub-dependencies:\n\n");
     }
 
     printf("%*s", (int)depth * 4, " ");
 
-    printf("%s>%s",
-           strlen(root->self->namespace) > 0 ? root->self->namespace : "(root)",
-           root->self->module);
+    if (root->self->parent)
+        printf("%s>", root->self->namespace);
+
+    printf("%s", root->self->module);
 
     if (root->children) {
         printf(" -> ");
