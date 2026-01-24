@@ -10,7 +10,7 @@
 void replacer_compile_gnt(arena_t *arena, const char *parent_dir,
                           nmspc_decl_t **decl, nmspc_link_t *root,
                           nmspc_link_t *parent, const char *content,
-                          size_t content_len) {
+                          size_t content_len, size_t *link_count) {
     size_t cursor_pos = 0;
     size_t lines_size = 0;
     size_t line_len = 0;
@@ -48,6 +48,7 @@ void replacer_compile_gnt(arena_t *arena, const char *parent_dir,
             arena, parent_dir, parent->self, decl, lines_size, line_len, line,
             dep_info->namespace, dep_info->module);
 
+        (*link_count)++;
         replacer_append_child_to_link(parent, link);
 
         FILE *f = fopen(link->self->path, "r");
@@ -57,7 +58,7 @@ void replacer_compile_gnt(arena_t *arena, const char *parent_dir,
         char *file_content = util_read_file_into_arena(arena, f);
 
         replacer_compile_gnt(arena, parent_dir, decl, root, link, file_content,
-                             file_size);
+                             file_size, link_count);
 
         fclose(f);
     }

@@ -9,11 +9,12 @@ void replacer(const char *main_module_path, const char *parent_path,
     nmspc_link_t *gnt =
         replacer_init_gnt(replacer_arena, main_module_path, filename);
 
-    replacer_compile_gnt(replacer_arena, parent_path, decl, gnt, gnt, content,
-                         len);
-    replacer_visualize_gnt(gnt);
+    size_t link_count = 1; // the root counts too
 
-    size_t link_count = replacer_get_gnt_link_count(gnt);
+    replacer_compile_gnt(replacer_arena, parent_path, decl, gnt, gnt, content,
+                         len, &link_count);
+
+    replacer_visualize_gnt(gnt);
 
     nmspc_link_t **gnt_flat =
         replacer_flatten_gnt(replacer_arena, gnt, link_count);
