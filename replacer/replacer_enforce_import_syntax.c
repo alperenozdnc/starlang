@@ -7,9 +7,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-void replacer_enforce_import_syntax(char *line, size_t lines_size,
-                                    size_t line_len, char *rhs, size_t rhs_len,
-                                    size_t lhs_len) {
+void replacer_enforce_import_syntax(const char *module_path, char *line,
+                                    size_t lines_size, size_t line_len,
+                                    char *rhs, size_t rhs_len, size_t lhs_len) {
     size_t action_idx = 0;
     size_t line_idx = 0;
 
@@ -27,8 +27,8 @@ void replacer_enforce_import_syntax(char *line, size_t lines_size,
             if (seen_action_start) {
                 size_t col = line_idx + 1;
 
-                FRONTEND_THROW_ERR_WITH_POS(
-                    line, lines_size, col, 1,
+                FRONTEND_THROW_TRACED_ERR_WITH_POS(
+                    module_path, line, lines_size, col, 1,
                     "unallowed space at line %zu, col %zu.", lines_size, col);
             }
 
@@ -45,8 +45,8 @@ void replacer_enforce_import_syntax(char *line, size_t lines_size,
     if (strcmp(action_buf, REPLACER_IMPORT_ACTION) != 0) {
         size_t col = line_idx - action_idx + 1;
 
-        FRONTEND_THROW_ERR_WITH_POS(
-            line, lines_size, col, IMPORT_ACTION_LEN,
+        FRONTEND_THROW_TRACED_ERR_WITH_POS(
+            module_path, line, lines_size, col, IMPORT_ACTION_LEN,
             "unrecognized action '%s' at line %zu, col %zu.", action_buf,
             lines_size, col);
     }
@@ -54,8 +54,8 @@ void replacer_enforce_import_syntax(char *line, size_t lines_size,
     if (line[line_idx] != ' ') {
         size_t col = line_idx + 1;
 
-        FRONTEND_THROW_ERR_WITH_POS(
-            line, lines_size, col, 1,
+        FRONTEND_THROW_TRACED_ERR_WITH_POS(
+            module_path, line, lines_size, col, 1,
             "unrecognized character '%c' at line %zu, col %zu. "
             "expected ' '.",
             line[line_idx], lines_size, col);
@@ -65,15 +65,16 @@ void replacer_enforce_import_syntax(char *line, size_t lines_size,
     size_t len_before_semicolon = strcspn(rhs, ";");
 
     if (len_before_indicator == rhs_len) {
-        FRONTEND_THROW_ERR_WITH_POS((char *)line, line_idx, 1, line_len,
-                                    "no '>' symbol found to distinctuate "
-                                    "between namespace and module at line %zu.",
-                                    line_idx);
+        FRONTEND_THROW_TRACED_ERR_WITH_POS(
+            module_path, line, line_idx, 1, line_len,
+            "no '>' symbol found to distinctuate "
+            "between namespace and module at line %zu.",
+            line_idx);
     }
 
     if (len_before_semicolon == rhs_len) {
-        FRONTEND_THROW_ERR_WITH_POS(
-            (char *)line, line_idx, line_len, 1,
+        FRONTEND_THROW_TRACED_ERR_WITH_POS(
+            module_path, line, line_idx, line_len, 1,
             "missing semicolon after line %zu, col %zu.", line_idx, line_len);
     }
 
@@ -81,9 +82,10 @@ void replacer_enforce_import_syntax(char *line, size_t lines_size,
         size_t start = lhs_len + 1; // +1 to skip space after lhs
         size_t len = rhs_len - 1;   // -1 to not include semicolon at end
 
-        FRONTEND_THROW_ERR_WITH_POS((char *)line, line_idx, start, len,
-                                    "all modules must have '.st' as their "
-                                    "extension. discrepancy at line %zu.",
-                                    line_idx);
+        FRONTEND_THROW_TRACED_ERR_WITH_POS(
+            module_path, line, line_idx, start, len,
+            "all modules must have '.st' as their "
+            "extension. discrepancy at line %zu.",
+            line_idx);
     }
 }

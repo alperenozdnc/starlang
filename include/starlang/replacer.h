@@ -56,9 +56,9 @@ bool replacer_heuristic_is_action(char *line, size_t line_len);
  * enforces syntax for an action statement. this checks the given statement only
  * against `@import` because that's the only action in starlang.
  */
-void replacer_enforce_import_syntax(char *line, size_t lines_size,
-                                    size_t line_len, char *rhs, size_t rhs_len,
-                                    size_t lhs_len);
+void replacer_enforce_import_syntax(const char *module_path, char *line,
+                                    size_t lines_size, size_t line_len,
+                                    char *rhs, size_t rhs_len, size_t lhs_len);
 /*
  * builds the namespace and module into given buffers from a syntactically and
  * enforced statement. this is to be used after `replacer_enforce_import_syntax`
@@ -71,9 +71,9 @@ nmspc_module_t *replacer_build_nmspc_and_module(arena_t *arena, const char *rhs,
  * (namespace>module.st). this checks the statement for correct letter usage
  * (i.e. only alphabetical and underscore letters)
  */
-void replacer_enforce_import_grammar(const char *line, size_t line_idx,
-                                     const char *namespace, const char *module,
-                                     size_t lhs_len);
+void replacer_enforce_import_grammar(const char *module_path, const char *line,
+                                     size_t line_idx, const char *namespace,
+                                     const char *module, size_t lhs_len);
 
 /*
  * compares all nodes in a - usually incomplete - GNT (generated namespace tree)
@@ -87,8 +87,9 @@ bool replacer_is_dep_uniq(nmspc_link_t *head, nmspc_module_t *dep_info);
  * by comparing the currently compiled namespace and module information against
  * the parent's.
  */
-void replacer_enforce_no_self_import(char *line, size_t line_idx,
-                                     size_t line_len, nmspc_link_t *parent,
+void replacer_enforce_no_self_import(char *module_path, char *line,
+                                     size_t line_idx, size_t line_len,
+                                     nmspc_link_t *parent,
                                      nmspc_module_t *dep_info);
 
 /*
@@ -135,14 +136,15 @@ nmspc_link_t *replacer_get_nmspc_link(arena_t *arena, const char *parent_path,
  * generates the root node for a GNT (generated namespace tree). `module` is
  * the file that the interpreter was called on.
  */
-nmspc_link_t *replacer_init_gnt(arena_t *arena, const char *module);
+nmspc_link_t *replacer_init_gnt(arena_t *arena, const char *path,
+                                const char *module);
 
 /*
  * generates a GNT (generated namespace tree) by recursively compiling
  * import dependencies of module. each branch ends at the module that
  * imports to other modules.
  */
-void replacer_compile_gnt(arena_t *arena, const char *parent_path,
+void replacer_compile_gnt(arena_t *arena, const char *parent_dir,
                           nmspc_decl_t **decl, nmspc_link_t *root,
                           nmspc_link_t *parent, const char *content,
                           size_t content_len);
@@ -174,5 +176,5 @@ void replacer_print_flattened_gnt(nmspc_link_t **gnt_flat, size_t link_count);
  * because this is essentially doing text replacement for the imports, but
  * not exactly.
  */
-void replacer(const char *parent_path, const char *filename,
-              const char *content, size_t len);
+void replacer(const char *main_module_path, const char *parent_path,
+              const char *filename, const char *content, size_t len);

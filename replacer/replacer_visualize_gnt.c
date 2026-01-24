@@ -1,6 +1,7 @@
 #include <starlang/replacer.h>
 
 #include <stdio.h>
+#include <string.h>
 
 void _replacer_visualize_gnt(nmspc_link_t *root, size_t depth) {
     if (root->self->parent) {
@@ -9,7 +10,9 @@ void _replacer_visualize_gnt(nmspc_link_t *root, size_t depth) {
 
     printf("%*s", (int)depth * 4, " ");
 
-    printf("%s/%s", root->self->namespace, root->self->module);
+    printf("%s>%s",
+           strlen(root->self->namespace) > 0 ? root->self->namespace : "(root)",
+           root->self->module);
 
     if (root->children) {
         printf(" -> ");

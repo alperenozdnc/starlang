@@ -7,7 +7,9 @@
 #define FRONTEND_ERR CLI_ERROR
 #define FRONTEND_WARN CLI_WARN
 #define FRONTEND_HINT CLI_HINT
-#define FRONTEND_PRINT_PREFIX "[starlang] "
+
+#define FRONTEND_PRINT_PREFIX_NOSPACE "[starlang]"
+#define FRONTEND_PRINT_PREFIX FRONTEND_PRINT_PREFIX_NOSPACE " "
 
 #define FRONTEND_PRINT(code, prefix, msg, ...)                                 \
     cliprint(code, prefix, msg,                                                \
@@ -21,13 +23,31 @@
                        ##__VA_ARGS__);                                         \
                                                                                \
         exit(EXIT_FAILURE);                                                    \
+                                                                               \
+        __builtin_unreachable();                                               \
+    } while (0);
+
+#define FRONTEND_THROW_TRACED_ERR_WITH_POS(path, line_str, line, col, len,     \
+                                           msg, ...)                           \
+    do {                                                                       \
+        frontend_prettyprint_errpos(line_str, line, col, len);                 \
+                                                                               \
+        FRONTEND_PRINT(FRONTEND_ERR, FRONTEND_PRINT_PREFIX, msg,               \
+                       ##__VA_ARGS__);                                         \
+                                                                               \
+        FRONTEND_PRINT(FRONTEND_WARN, "[starlang/traceback] ", "%s:%zu:%zu",   \
+                       path, line, col);                                       \
+                                                                               \
+        exit(EXIT_FAILURE);                                                    \
+                                                                               \
+        __builtin_unreachable();                                               \
     } while (0);
 
 /*
  * interprets starlang code in given filename. returns boolean based on success.
  */
-bool frontend_entrypoint(const char *full_path, const char *path,
-                         const char *filename);
+bool frontend_entrypoint(const char *rel_main_module_path,
+                         const char *parent_path, const char *filename);
 
 #define CLI_CMD_NAME "starlang"
 

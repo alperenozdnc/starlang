@@ -5,8 +5,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-void replacer_enforce_no_self_import(char *line, size_t line_idx,
-                                     size_t line_len, nmspc_link_t *parent,
+void replacer_enforce_no_self_import(char *module_path, char *line,
+                                     size_t line_idx, size_t line_len,
+                                     nmspc_link_t *parent,
                                      nmspc_module_t *dep_info) {
     bool does_import_self = false;
 
@@ -19,8 +20,9 @@ void replacer_enforce_no_self_import(char *line, size_t line_idx,
     if (!does_import_self)
         return;
 
-    FRONTEND_THROW_ERR_WITH_POS(
-        line, line_idx, 1, line_len - 1, // to exclude the ';' from diagnostics
+    FRONTEND_THROW_TRACED_ERR_WITH_POS(
+        module_path, line, line_idx, 1,
+        line_len - 1, // to exclude the ';' from diagnostics
         "dependency '%s>%s' tries to import itself on "
         "line %zu.",
         dep_info->namespace, dep_info->module, line_idx);

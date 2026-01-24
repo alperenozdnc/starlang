@@ -33,11 +33,12 @@ nmspc_link_t *replacer_get_nmspc_link(arena_t *arena, const char *parent_path,
         size_t col_start = IMPORT_ACTION_LEN + strlen(namespace) + 3;
 
         if (access(module_path_fs, F_OK) != 0) {
-            FRONTEND_THROW_ERR_WITH_POS((char *)line, line_idx, col_start,
-                                        line_len - col_start,
-                                        "can't find module '%s' from namespace "
-                                        "'%s' on disk imported from line %zu.",
-                                        module, namespace, line_idx);
+            FRONTEND_THROW_TRACED_ERR_WITH_POS(
+                parent_node->path, (char *)line, line_idx, col_start,
+                line_len - col_start,
+                "can't find module '%s' from namespace "
+                "'%s' on disk imported from line %zu.",
+                module, namespace, line_idx);
         }
 
         link_path = module_path_fs;
@@ -50,8 +51,9 @@ nmspc_link_t *replacer_get_nmspc_link(arena_t *arena, const char *parent_path,
         // +1 for skipping the space after '@import'
         size_t col_start = IMPORT_ACTION_LEN + 2;
 
-        FRONTEND_THROW_ERR_WITH_POS(
-            (char *)line, line_idx, col_start, strlen(namespace),
+        FRONTEND_THROW_TRACED_ERR_WITH_POS(
+            parent_node->path, (char *)line, line_idx, col_start,
+            strlen(namespace),
             "can't find namespace '%s' on disk imported from line %zu.",
             namespace, line_idx);
     }
