@@ -5,8 +5,8 @@
 
 #include <stdio.h>
 
-bool frontend_entrypoint(const char *rel_main_module_path,
-                         const char *parent_path, const char *filename) {
+bool frontend_entrypoint(char *rel_main_module_path, char *parent_path,
+                         char *filename) {
     FILE *file = fopen(rel_main_module_path, "r");
     size_t file_size = util_get_file_size(file);
 

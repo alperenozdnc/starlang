@@ -15,8 +15,8 @@ typedef enum {
 #undef X
 } lexeme_type_t;
 
-static inline const char *lexeme_to_str(lexeme_type_t t) {
-    static const char *table[] = {
+static inline char *lexeme_to_str(lexeme_type_t t) {
+    static char *table[] = {
 #define X(name) #name,
 #include <starlang/lexeme.h>
         GET_LEXEMES()

@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void replacer_enforce_import_syntax(const char *module_path, char *line,
+void replacer_enforce_import_syntax(char *module_path, char *line,
                                     size_t lines_size, size_t line_len,
                                     char *rhs, size_t rhs_len, size_t lhs_len) {
     size_t action_idx = 0;

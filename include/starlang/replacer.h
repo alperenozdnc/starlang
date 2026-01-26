@@ -12,9 +12,9 @@
 /* struct for holding information about a namespace in the GNT (generated
  namespace tree, yes, i came up with that weird name) */
 typedef struct nmspc_node_t {
-    const char *namespace;
-    const char *module;
-    const char *path;
+    char *namespace;
+    char *module;
+    char *path;
 
     struct nmspc_node_t *parent;
 } nmspc_node_t;
@@ -32,15 +32,15 @@ typedef struct nmspc_link_t {
 /* struct for holding information about a statement's namespace and module
    dependencies. */
 typedef struct {
-    const char *namespace;
-    const char *module;
+    char *namespace;
+    char *module;
 } nmspc_module_t;
 
 /* struct for holding information about a namespace declaration (written in
    .starnmspc) */
 typedef struct {
-    const char *name;
-    const char *path;
+    char *name;
+    char *path;
 } nmspc_decl_t;
 
 /*
@@ -56,7 +56,7 @@ bool replacer_heuristic_is_action(char *line, size_t line_len);
  * enforces syntax for an action statement. this checks the given statement only
  * against `@import` because that's the only action in starlang.
  */
-void replacer_enforce_import_syntax(const char *module_path, char *line,
+void replacer_enforce_import_syntax(char *module_path, char *line,
                                     size_t lines_size, size_t line_len,
                                     char *rhs, size_t rhs_len, size_t lhs_len);
 /*
@@ -64,16 +64,16 @@ void replacer_enforce_import_syntax(const char *module_path, char *line,
  * enforced statement. this is to be used after `replacer_enforce_import_syntax`
  * and right before `replacer_enforce_import_grammar`.
  */
-nmspc_module_t *replacer_build_nmspc_and_module(arena_t *arena, const char *rhs,
+nmspc_module_t *replacer_build_nmspc_and_module(arena_t *arena, char *rhs,
                                                 size_t rhs_len);
 /*
  * enforces grammar for the right hand side of an action statement
  * (namespace>module.st). this checks the statement for correct letter usage
  * (i.e. only alphabetical and underscore letters)
  */
-void replacer_enforce_import_grammar(const char *module_path, const char *line,
-                                     size_t line_idx, const char *namespace,
-                                     const char *module, size_t lhs_len);
+void replacer_enforce_import_grammar(char *module_path, char *line,
+                                     size_t line_idx, char *namespace,
+                                     char *module, size_t lhs_len);
 
 /*
  * compares all nodes in a - usually incomplete - GNT (generated namespace tree)
@@ -110,14 +110,14 @@ void _replacer_visualize_gnt(nmspc_link_t *root, size_t depth);
  * reads all namespace declarations from the namespace file (`.starnmspc`). this
  * is used to resolve `@import` statements at the filesystem.
  */
-nmspc_decl_t **replacer_get_nmspc_decl(arena_t *arena, const char *parent_path);
+nmspc_decl_t **replacer_get_nmspc_decl(arena_t *arena, char *parent_path);
 
 /*
  * initializes a namespace link with the given values.
  */
 nmspc_link_t *replacer_init_nmspc_link(arena_t *arena, nmspc_node_t *parent,
-                                       const char *path, const char *namespace,
-                                       const char *module);
+                                       char *path, char *namespace,
+                                       char *module);
 
 /*
  * this builds a node that belongs to a GNT (generated namespace tree) from
@@ -125,29 +125,28 @@ nmspc_link_t *replacer_init_nmspc_link(arena_t *arena, nmspc_node_t *parent,
  * against the declarations present in `**declarations` and verifies
  * filesystem existence.
  */
-nmspc_link_t *replacer_get_nmspc_link(arena_t *arena, const char *parent_path,
+nmspc_link_t *replacer_get_nmspc_link(arena_t *arena, char *parent_path,
                                       nmspc_node_t *parent_node,
                                       nmspc_decl_t **declarations,
                                       size_t line_idx, size_t line_len,
-                                      const char *line, const char *namespace,
-                                      const char *module);
+                                      char *line, char *namespace,
+                                      char *module);
 
 /*
  * generates the root node for a GNT (generated namespace tree). `module` is
  * the file that the interpreter was called on.
  */
-nmspc_link_t *replacer_init_gnt(arena_t *arena, const char *path,
-                                const char *module);
+nmspc_link_t *replacer_init_gnt(arena_t *arena, char *path, char *module);
 
 /*
  * generates a GNT (generated namespace tree) by recursively compiling
  * import dependencies of module. each branch ends at the module that
  * imports to other modules.
  */
-void replacer_compile_gnt(arena_t *arena, const char *parent_dir,
-                          nmspc_decl_t **decl, nmspc_link_t *root,
-                          nmspc_link_t *parent, const char *content,
-                          size_t content_len, size_t *link_count);
+void replacer_compile_gnt(arena_t *arena, char *parent_dir, nmspc_decl_t **decl,
+                          nmspc_link_t *root, nmspc_link_t *parent,
+                          char *content, size_t content_len,
+                          size_t *link_count);
 
 /*
  * flattens a GNT (generated namespace tree) into a set of links in a manner
@@ -166,5 +165,5 @@ void replacer_visualize_flat_gnt(nmspc_link_t **gnt_flat, size_t link_count);
  * because this is essentially doing text replacement for the imports, but
  * not exactly.
  */
-void replacer(const char *main_module_path, const char *parent_path,
-              const char *filename, const char *content, size_t len);
+void replacer(char *main_module_path, char *parent_path, char *filename,
+              char *content, size_t len);

@@ -5,9 +5,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-void replacer_enforce_import_grammar(const char *module_path, const char *line,
-                                     size_t line_idx, const char *namespace,
-                                     const char *module, size_t lhs_len) {
+void replacer_enforce_import_grammar(char *module_path, char *line,
+                                     size_t line_idx, char *namespace,
+                                     char *module, size_t lhs_len) {
     size_t namespace_len = strlen(namespace);
     size_t module_len = strlen(module);
 

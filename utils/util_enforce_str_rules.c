@@ -3,8 +3,8 @@
 #include <ctype.h>
 #include <stdbool.h>
 
-char util_enforce_str_rules(const char *str, size_t len,
-                            char_whitelist_t whitelist, char exceptions[]) {
+char util_enforce_str_rules(char *str, size_t len, char_whitelist_t whitelist,
+                            char exceptions[]) {
     for (size_t i = 0; i < len; i++) {
         char c = str[i];
 

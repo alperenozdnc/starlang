@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <sys/stat.h>
 
-bool util_is_path_a_file(const char *pathname) {
+bool util_is_path_a_file(char *pathname) {
     struct stat s = {0};
 
     stat(pathname, &s);

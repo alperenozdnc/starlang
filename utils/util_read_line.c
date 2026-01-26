@@ -3,7 +3,7 @@
 
 #include <string.h>
 
-char *util_read_line(arena_t *arena, const char *buf, size_t buf_len,
+char *util_read_line(arena_t *arena, char *buf, size_t buf_len,
                      size_t *line_len, size_t *lines_size, size_t *start_idx) {
     if ((*start_idx + 1) > buf_len)
         return NULL;

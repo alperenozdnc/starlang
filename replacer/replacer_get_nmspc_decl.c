@@ -5,8 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-nmspc_decl_t **replacer_get_nmspc_decl(arena_t *arena,
-                                       const char *parent_path) {
+nmspc_decl_t **replacer_get_nmspc_decl(arena_t *arena, char *parent_path) {
     char *full_path = util_build_str(arena, parent_path, ".starnmspc");
 
     FILE *decl_fptr = fopen(full_path, "r"); // todo: stop hardcoding
@@ -18,7 +17,7 @@ nmspc_decl_t **replacer_get_nmspc_decl(arena_t *arena,
     }
 
     size_t total_decl_line_size = util_count_lines(decl_fptr);
-    const char *decl_content = util_read_file_into_arena(arena, decl_fptr);
+    char *decl_content = util_read_file_into_arena(arena, decl_fptr);
 
     nmspc_decl_t **declarations =
         arena_alloc(arena, sizeof(nmspc_decl_t *) * (total_decl_line_size + 1));

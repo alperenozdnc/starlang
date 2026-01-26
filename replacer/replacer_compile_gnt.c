@@ -7,16 +7,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-void replacer_compile_gnt(arena_t *arena, const char *parent_dir,
-                          nmspc_decl_t **decl, nmspc_link_t *root,
-                          nmspc_link_t *parent, const char *content,
-                          size_t content_len, size_t *link_count) {
+void replacer_compile_gnt(arena_t *arena, char *parent_dir, nmspc_decl_t **decl,
+                          nmspc_link_t *root, nmspc_link_t *parent,
+                          char *content, size_t content_len,
+                          size_t *link_count) {
     size_t cursor_pos = 0;
     size_t lines_size = 0;
     size_t line_len = 0;
     char *line = NULL;
 
-    // lhs is always '@import ' in all cases so this is constant
+    // lhs is always '@import ' in all cases so this is ant
     size_t lhs_len = IMPORT_ACTION_LEN + 1; // +1 for space after '@import'
 
     while ((line = util_read_line(arena, content, content_len, &line_len,

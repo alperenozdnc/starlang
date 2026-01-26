@@ -9,14 +9,14 @@
  * checks for existence of any kind of object on path `pathname`. returns a
  * boolean based on success.
  */
-bool util_does_path_exist(const char *pathname);
+bool util_does_path_exist(char *pathname);
 
 /*
  * checks if a given path `pathname` is a file. returns a boolean based on
  * success. this utility assumes `pathname` is already validated to exist on
  * disk.
  */
-bool util_is_path_a_file(const char *pathname);
+bool util_is_path_a_file(char *pathname);
 
 /*
  * checks if a given path `pathname` has extension `ext`. returns a boolean
@@ -24,7 +24,7 @@ bool util_is_path_a_file(const char *pathname);
  * exist on disk, and is validated to be a regular file. note that `ext` has to
  * be prefixed by a dot.
  */
-bool util_validate_file_ext(const char *pathname, const char *ext);
+bool util_validate_file_ext(char *pathname, char *ext);
 
 /*
  * gets a file's size in terms of total bytes. this utility assumes `pathname`
@@ -43,14 +43,14 @@ char *util_read_file_into_arena(arena_t *arena, FILE *f);
  * the next line, `line_len` to the length of the current line read, and
  * `lines_size` to the amount of lines read.
  */
-char *util_read_line(arena_t *arena, const char *buf, size_t buf_len,
+char *util_read_line(arena_t *arena, char *buf, size_t buf_len,
                      size_t *line_len, size_t *lines_size, size_t *start_idx);
 
 /*
  * checks if a string ends with suffix string `suffix`. returns a boolean value
  * based on success.
  */
-bool util_does_str_end_with_suffix(const char *str, char *suffix);
+bool util_does_str_end_with_suffix(char *str, char *suffix);
 
 // enum for deciding which kinds of characters to whitelist
 typedef enum {
@@ -66,8 +66,8 @@ typedef enum {
  * `NULL` terminated. returns the offending character if any is found, returns
  * '\0' otherwise. `char_whitelist_t` values are to be used with bit masking.
  */
-char util_enforce_str_rules(const char *str, size_t len,
-                            char_whitelist_t whitelist, char exceptions[]);
+char util_enforce_str_rules(char *str, size_t len, char_whitelist_t whitelist,
+                            char exceptions[]);
 
 /*
  * builds an arbitrary amount of strings passed as arguments into one whole

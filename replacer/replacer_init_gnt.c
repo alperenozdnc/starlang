@@ -4,7 +4,6 @@
 
 #include <string.h>
 
-nmspc_link_t *replacer_init_gnt(arena_t *arena, const char *path,
-                                const char *module) {
+nmspc_link_t *replacer_init_gnt(arena_t *arena, char *path, char *module) {
     return replacer_init_nmspc_link(arena, NULL, path, "", module);
 }

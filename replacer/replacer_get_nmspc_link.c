@@ -7,12 +7,12 @@
 #include <string.h>
 #include <unistd.h>
 
-nmspc_link_t *replacer_get_nmspc_link(arena_t *arena, const char *parent_path,
+nmspc_link_t *replacer_get_nmspc_link(arena_t *arena, char *parent_path,
                                       nmspc_node_t *parent_node,
                                       nmspc_decl_t **declarations,
                                       size_t line_idx, size_t line_len,
-                                      const char *line, const char *namespace,
-                                      const char *module) {
+                                      char *line, char *namespace,
+                                      char *module) {
     char *link_path = NULL;
     size_t i = 0;
 
