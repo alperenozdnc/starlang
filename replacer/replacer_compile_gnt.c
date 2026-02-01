@@ -11,6 +11,8 @@ void replacer_compile_gnt(arena_t *arena, char *parent_dir, nmspc_decl_t **decl,
                           nmspc_link_t *root, nmspc_link_t *parent,
                           char *content, size_t content_len,
                           size_t *link_count) {
+    parent->self->import_indices_heap = malloc(sizeof(size_t));
+
     size_t cursor_pos = 0;
     size_t lines_size = 0;
     size_t line_len = 0;
@@ -41,6 +43,8 @@ void replacer_compile_gnt(arena_t *arena, char *parent_dir, nmspc_decl_t **decl,
         replacer_enforce_no_self_import((char *)parent->self->path, line,
                                         lines_size, line_len, parent, dep_info);
 
+        replacer_push_import_idx(parent->self, lines_size - 1);
+
         if (!replacer_is_dep_uniq(root, dep_info))
             continue;
 
@@ -57,9 +61,14 @@ void replacer_compile_gnt(arena_t *arena, char *parent_dir, nmspc_decl_t **decl,
         size_t file_size = util_get_file_size(f);
         char *file_content = util_read_file_into_arena(arena, f);
 
+        link->self->content = file_content;
+        link->self->content_len = file_size - 1; // -1 to exclude nullterm
+
         replacer_compile_gnt(arena, parent_dir, decl, root, link, file_content,
                              file_size, link_count);
 
         fclose(f);
     }
+
+    parent->self->content_line_count = lines_size;
 }
