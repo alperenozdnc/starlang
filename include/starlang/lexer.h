@@ -26,6 +26,10 @@ static inline char *lexeme_to_str(lexeme_type_t t) {
     return table[t];
 }
 
+/*
+ * struct for holding information about a lexeme. this belongs to a region of
+ * type `lexer_region_t`.
+ */
 typedef struct lexeme_t {
     lexeme_type_t type;
 
@@ -38,6 +42,10 @@ typedef struct lexeme_t {
     struct lexeme_t *next;
 } lexeme_t;
 
+/*
+ * struct for holding information about a lexer region. a lexer region is a
+ * range of lines that belong to a file with its corresponding lexemes.
+ */
 typedef struct lexer_region_t {
     size_t start;
     size_t end;
