@@ -4,7 +4,6 @@
     X(LEX_EOF)                                                                 \
     X(LEX_SEMI)                                                                \
     X(LEX_COMMENT)                                                             \
-    X(LEX_IMPORT)                                                              \
     X(LEX_PERIOD)                                                              \
     X(LEX_FOR)                                                                 \
     X(LEX_IF)                                                                  \
