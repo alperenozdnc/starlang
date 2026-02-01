@@ -1,5 +1,6 @@
 #include <starlang/arena.h>
 #include <starlang/replacer.h>
+#include <starlang/transitions.h>
 
 src_t *replacer(arena_t *intermediate_arena, char *main_module_path,
                 char *parent_path, char *filename, char *content, size_t len) {

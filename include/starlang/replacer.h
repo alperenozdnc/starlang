@@ -1,6 +1,7 @@
 #pragma once
 
 #include <starlang/arena.h>
+#include <starlang/transitions.h>
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -50,29 +51,6 @@ typedef struct {
     char *name;
     char *path;
 } nmspc_decl_t;
-
-// structure holding information about a file's position in the source. this is
-// purely for error printing as the lexer won't need to know which files are
-// which thanks to the flattened source.
-typedef struct {
-    size_t start;
-    size_t end;
-
-    char *file_path;
-} file_range_t;
-
-// monolithic structure holding all information about the source of the program
-// to be passed onto the lexer. after this is passed and memcpy'd, the replacer
-// arena can be freed.
-typedef struct {
-    char *content;
-    size_t *import_indices;
-    file_range_t **file_ranges;
-
-    size_t content_len;
-    size_t import_indices_len;
-    size_t file_ranges_len;
-} src_t;
 
 /*
  * decides if a given line should be interpreted as an action, this validates as
