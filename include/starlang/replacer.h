@@ -16,6 +16,14 @@ typedef struct nmspc_node_t {
     char *module;
     char *path;
 
+    char *content;
+    size_t content_len;
+    size_t content_line_count;
+
+    size_t *import_indices_heap;
+    size_t import_indices_size;
+    size_t import_indices_len;
+
     struct nmspc_node_t *parent;
 } nmspc_node_t;
 
@@ -42,6 +50,29 @@ typedef struct {
     char *name;
     char *path;
 } nmspc_decl_t;
+
+// structure holding information about a file's position in the source. this is
+// purely for error printing as the lexer won't need to know which files are
+// which thanks to the flattened source.
+typedef struct {
+    size_t start;
+    size_t end;
+
+    char *file_path;
+} file_range_t;
+
+// monolithic structure holding all information about the source of the program
+// to be passed onto the lexer. after this is passed and memcpy'd, the replacer
+// arena can be freed.
+typedef struct {
+    char *content;
+    size_t *import_indices;
+    file_range_t **file_ranges;
+
+    size_t content_len;
+    size_t import_indices_len;
+    size_t file_ranges_len;
+} src_t;
 
 /*
  * decides if a given line should be interpreted as an action, this validates as
@@ -136,7 +167,8 @@ nmspc_link_t *replacer_get_nmspc_link(arena_t *arena, char *parent_path,
  * generates the root node for a GNT (generated namespace tree). `module` is
  * the file that the interpreter was called on.
  */
-nmspc_link_t *replacer_init_gnt(arena_t *arena, char *path, char *module);
+nmspc_link_t *replacer_init_gnt(arena_t *arena, char *content,
+                                size_t content_len, char *path, char *module);
 
 /*
  * generates a GNT (generated namespace tree) by recursively compiling
@@ -161,9 +193,26 @@ nmspc_link_t **replacer_flatten_gnt(arena_t *arena, nmspc_link_t *gnt,
 void replacer_visualize_flat_gnt(nmspc_link_t **gnt_flat, size_t link_count);
 
 /*
- * the replacer routine - resolves namespaces and imports. the name comes
- * because this is essentially doing text replacement for the imports, but
- * not exactly.
+ * pushes an import idx to an array to keep track of which lines the lexer
+ * should ignore since the replacer doesn't really mutate anything except
+ * flatten source in the correct order.
  */
-void replacer(char *main_module_path, char *parent_path, char *filename,
-              char *content, size_t len);
+void replacer_push_import_idx(nmspc_node_t *node, size_t new_idx);
+
+/*
+ * normalizes all dependencies in a GNT (generated namespace tree) into a single
+ * source string and also provides lines to ignore and file offset information
+ * used for error printing. the result of this is to be returned from the
+ * replacer, and copied in the lexer. the replacer arena holds no purpose after
+ * this function.
+ */
+void replacer_compile_src(src_t *src, arena_t *intermediate_arena,
+                          nmspc_link_t **gnt_flat, size_t link_count);
+
+/*
+ * the replacer routine - resolves namespaces and imports and returns a
+ * flattened source, the blacklist information (the import lines which are
+ * ignored in the lexer) and offset information (used for error printing).
+ */
+src_t *replacer(arena_t *intermediate_arena, char *main_module_path,
+                char *parent_path, char *filename, char *content, size_t len);
