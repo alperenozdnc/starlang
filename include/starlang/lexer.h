@@ -1,9 +1,9 @@
 #pragma once
 
 #include <starlang/arena.h>
+#include <starlang/transitions.h>
 
 #include <stddef.h>
-#include <stdio.h>
 
 /*
  * the enum that lists all lexeme types.
@@ -27,30 +27,8 @@ static inline char *lexeme_to_str(lexeme_type_t t) {
 }
 
 /*
- * the struct that holds all the information about a lexeme.
+ * the lexer routine - this step in the pipeline converts all non-whitespace
+ * tokens into 'lexemes'. you can think about lexemes as all tokens generalized
+ * into the smallest categories possible without losing meaning.
  */
-typedef struct {
-    lexeme_type_t kind;
-
-    char *val_start;
-    size_t val_size;
-
-    size_t line;
-    size_t col;
-} lexeme_t;
-
-/*
- * the struct that holds all the information about the lexer instance.
- */
-typedef struct {
-    char curr_char;
-    FILE *curr_fptr;
-
-    lexeme_t **lexemes;
-    size_t lexeme_count;
-} lexer_t;
-
-/*
- * initalizes a lexer instance.
- */
-lexer_t *lexer_init(arena_t *arena);
+void lexer(arena_t *trans_arena, src_t *source);
