@@ -184,7 +184,7 @@ void replacer_push_import_idx(nmspc_node_t *node, size_t new_idx);
  * replacer, and copied in the lexer. the replacer arena holds no purpose after
  * this function.
  */
-void replacer_compile_src(src_t *src, arena_t *intermediate_arena,
+void replacer_compile_src(src_t *src, arena_t *trans_arena,
                           nmspc_link_t **gnt_flat, size_t link_count);
 
 /*
@@ -192,5 +192,5 @@ void replacer_compile_src(src_t *src, arena_t *intermediate_arena,
  * flattened source, the blacklist information (the import lines which are
  * ignored in the lexer) and offset information (used for error printing).
  */
-src_t *replacer(arena_t *intermediate_arena, char *main_module_path,
-                char *parent_path, char *filename, char *content, size_t len);
+src_t *replacer(arena_t *trans_arena, char *main_module_path, char *parent_path,
+                char *filename, char *content, size_t len);

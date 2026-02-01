@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void replacer_compile_src(src_t *src, arena_t *intermediate_arena,
+void replacer_compile_src(src_t *src, arena_t *trans_arena,
                           nmspc_link_t **gnt_flat, size_t link_count) {
     size_t content_size = 1; // +1 for \0 at end
     size_t import_indices_len = 0;
@@ -18,21 +18,21 @@ void replacer_compile_src(src_t *src, arena_t *intermediate_arena,
         import_indices_len += node->import_indices_len;
     }
 
-    char *content = arena_alloc(intermediate_arena, content_size);
+    char *content = arena_alloc(trans_arena, content_size);
     size_t content_write_cursor = 0;
 
     size_t *import_indices =
-        arena_alloc(intermediate_arena, sizeof(size_t) * import_indices_len);
+        arena_alloc(trans_arena, sizeof(size_t) * import_indices_len);
     size_t import_indices_idx = 0;
     size_t line_offset = 0;
 
     file_range_t **file_ranges =
-        arena_alloc(intermediate_arena, sizeof(file_range_t *) * link_count);
+        arena_alloc(trans_arena, sizeof(file_range_t *) * link_count);
 
     for (size_t i = 0; i < link_count; i++) {
         nmspc_node_t *node = gnt_flat[i]->self;
 
-        file_range_t *range = arena_alloc(intermediate_arena, sizeof(*range));
+        file_range_t *range = arena_alloc(trans_arena, sizeof(*range));
         file_ranges[i] = range;
 
         range->start = line_offset;
@@ -55,7 +55,7 @@ void replacer_compile_src(src_t *src, arena_t *intermediate_arena,
                              // seperate files with extra newlines, which
                              // mustn't be included in semantic line accounting
 
-        range->file_path = util_build_str(intermediate_arena, node->path);
+        range->file_path = util_build_str(trans_arena, node->path);
 
         free(node->import_indices_heap);
     }

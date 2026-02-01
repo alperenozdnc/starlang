@@ -2,8 +2,8 @@
 #include <starlang/replacer.h>
 #include <starlang/transitions.h>
 
-src_t *replacer(arena_t *intermediate_arena, char *main_module_path,
-                char *parent_path, char *filename, char *content, size_t len) {
+src_t *replacer(arena_t *trans_arena, char *main_module_path, char *parent_path,
+                char *filename, char *content, size_t len) {
     arena_t *replacer_arena = arena_init(len);
 
     nmspc_decl_t **decl = replacer_get_nmspc_decl(replacer_arena, parent_path);
@@ -18,9 +18,9 @@ src_t *replacer(arena_t *intermediate_arena, char *main_module_path,
     nmspc_link_t **gnt_flat =
         replacer_flatten_gnt(replacer_arena, gnt, link_count);
 
-    src_t *src = arena_alloc(intermediate_arena, sizeof(*src));
+    src_t *src = arena_alloc(trans_arena, sizeof(*src));
 
-    replacer_compile_src(src, intermediate_arena, gnt_flat, link_count);
+    replacer_compile_src(src, trans_arena, gnt_flat, link_count);
 
     arena_free(replacer_arena);
 
