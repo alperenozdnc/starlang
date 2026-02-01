@@ -17,6 +17,14 @@ nmspc_link_t *replacer_init_nmspc_link(arena_t *arena, nmspc_node_t *parent,
     node->module = module;
     node->parent = parent;
 
+    node->content = NULL;
+    node->content_len = 0;
+    node->content_line_count = 0;
+
+    node->import_indices_heap = NULL;
+    node->import_indices_size = 0;
+    node->import_indices_len = 0;
+
     link->self = node;
     link->children = NULL;
     link->next = NULL;
