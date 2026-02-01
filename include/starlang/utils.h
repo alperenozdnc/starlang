@@ -5,6 +5,10 @@
 #include <stddef.h>
 #include <stdio.h>
 
+#define KiB(n) (n << 10)
+#define MiB(n) (KiB(n) << 10)
+#define GiB(n) (MiB(n) << 10)
+
 /*
  * checks for existence of any kind of object on path `pathname`. returns a
  * boolean based on success.
