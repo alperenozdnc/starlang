@@ -58,6 +58,17 @@ typedef struct lexer_region_t {
 } lexer_region_t;
 
 /*
+ * generates all regions for the source.
+ */
+lexer_region_t *lexer_generate_regions(arena_t *arena, src_t *source);
+
+/*
+ * appends a lexeme to the tail of a lexeme or creates a tail if none exists.
+ */
+void lexer_append_lexeme(arena_t *arena, lexer_region_t *region,
+                         lexeme_t **tail);
+
+/*
  * the lexer routine - this step in the pipeline converts all non-whitespace
  * tokens into 'lexemes'. you can think about lexemes as all tokens generalized
  * into the smallest categories possible without losing meaning.
