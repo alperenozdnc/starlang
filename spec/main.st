@@ -8,7 +8,17 @@ and should be ignored too. ##
 @import starlang>io.st;
 @import namespace>module.st;
 
+type num = int | float;
+
+decl sum(num x, num y): num {
+    ret x + y;
+}
+
 decl func(): nothing {
+    float pi = 3.14159265358979323;
+
+    printlnf("pi is approx. {pi}");
+
     fn();
 
     for (mut int x = 0; x < 1000; x++) {
@@ -17,6 +27,8 @@ decl func(): nothing {
 
     if (nothing == nothing) {
         println("nothing is nothing!");
+    } else if (nothing != nothing) {
+        println("nothing isn't nothing!");
     }
 }
 
