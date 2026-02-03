@@ -2,6 +2,7 @@
 
 #define GET_LEXEMES()                                                          \
     X(LEX_EOF)                                                                 \
+    X(LEX_EOL)                                                                 \
     X(LEX_SEMI)                                                                \
     X(LEX_COLON)                                                               \
     X(LEX_COMMA)                                                               \
