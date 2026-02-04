@@ -53,6 +53,7 @@ typedef struct lexer_region_t {
     size_t end;
 
     lexeme_t *lexemes;
+    lexeme_t *tail_lexeme;
 
     char *filename;
 
@@ -92,8 +93,7 @@ lexer_region_t *lexer_generate_regions(arena_t *arena, src_t *source);
 /*
  * appends a lexeme to the tail of a lexeme or creates a tail if none exists.
  */
-void lexer_append_lexeme(arena_t *arena, lexer_region_t *region,
-                         lexeme_t **tail);
+void lexer_lexify_token(lexer_t *l, lexeme_type_t type, size_t len);
 
 /*
  * initializes the lexer's state.
