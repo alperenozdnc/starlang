@@ -58,6 +58,22 @@ typedef struct lexer_region_t {
 } lexer_region_t;
 
 /*
+ * struct for the holding information about the state of the lexer.
+ */
+typedef struct {
+    char *src;
+    size_t src_len;
+
+    size_t pos;
+
+    size_t line;
+    size_t col;
+
+    lexer_region_t *region;
+    arena_t *arena;
+} lexer_t;
+
+/*
  * generates all regions for the source.
  */
 lexer_region_t *lexer_generate_regions(arena_t *arena, src_t *source);
@@ -67,6 +83,11 @@ lexer_region_t *lexer_generate_regions(arena_t *arena, src_t *source);
  */
 void lexer_append_lexeme(arena_t *arena, lexer_region_t *region,
                          lexeme_t **tail);
+
+/*
+ * initializes the lexer's state.
+ */
+lexer_t *lexer_init(src_t *source);
 
 /*
  * the lexer routine - this step in the pipeline converts all non-whitespace
