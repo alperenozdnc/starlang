@@ -59,6 +59,13 @@ typedef struct lexer_region_t {
     struct lexer_region_t *next;
 } lexer_region_t;
 
+typedef enum {
+    LEX_MODE_NORMAL,
+    LEX_MODE_NUMBER,
+    LEX_MODE_STR,
+    LEX_MODE_IDEN
+} lexer_mode_t;
+
 /*
  * struct for the holding information about the state of the lexer.
  */
@@ -72,6 +79,7 @@ typedef struct {
     size_t line;
     size_t col;
 
+    lexer_mode_t mode;
     lexer_region_t *region;
     arena_t *arena;
 } lexer_t;
