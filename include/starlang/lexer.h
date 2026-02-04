@@ -107,6 +107,12 @@ lexer_t *lexer_init(src_t *source);
 char lexer_continue(lexer_t *l);
 
 /*
+ * peeks any character with a specific offset in the source content. returns
+ * `'\0'` if bounds checking fails.
+ */
+inline char lexer_peek(lexer_t *l, size_t offset);
+
+/*
  * the lexer routine - this step in the pipeline converts all non-whitespace
  * tokens into 'lexemes'. you can think about lexemes as all tokens generalized
  * into the smallest categories possible without losing meaning.
