@@ -4,7 +4,8 @@
 
 void lexer(arena_t *trans_arena, src_t *source) {
     (void)trans_arena;
-    (void)source;
+
+    lexer_t *l = lexer_init(source);
 
     return;
 }
