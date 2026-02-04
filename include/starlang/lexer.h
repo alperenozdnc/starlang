@@ -5,6 +5,8 @@
 
 #include <stddef.h>
 
+#define EOF -1
+
 /*
  * the enum that lists all lexeme types.
  */
@@ -66,6 +68,7 @@ typedef struct {
 
     size_t pos;
 
+    size_t offset;
     size_t line;
     size_t col;
 
@@ -88,6 +91,12 @@ void lexer_append_lexeme(arena_t *arena, lexer_region_t *region,
  * initializes the lexer's state.
  */
 lexer_t *lexer_init(src_t *source);
+
+/*
+ * advances lexer to the next character in source while keeping in mind the
+ * line, column, position and region information.
+ */
+char lexer_continue(lexer_t *l);
 
 /*
  * the lexer routine - this step in the pipeline converts all non-whitespace
