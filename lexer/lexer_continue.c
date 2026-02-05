@@ -1,6 +1,9 @@
 #include <starlang/lexer.h>
 
 char lexer_continue(lexer_t *l) {
+    if (l->pos == 0)
+        lexer_get_line(l);
+
     if (l->pos == l->src_len)
         return EOF;
 
@@ -15,11 +18,8 @@ char lexer_continue(lexer_t *l) {
     l->line++;
     l->col = 0;
 
-    if (l->region->next && ((l->line + l->offset) > l->region->end)) {
-        l->region = l->region->next;
-        l->offset = l->region->start;
-        l->line = 0;
-    }
+    lexer_get_line(l);
+    lexer_check_region(l);
 
     return c;
 }
