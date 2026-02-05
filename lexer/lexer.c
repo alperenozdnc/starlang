@@ -7,5 +7,23 @@ void lexer(arena_t *trans_arena, src_t *source) {
 
     lexer_t *l = lexer_init(source);
 
-    return;
+    char c = '\0';
+
+    while ((c = lexer_continue(l)) != EOF) {
+        if (lexer_skip_line(l, c))
+            continue;
+
+        if (lexer_consume_import(l, source))
+            continue;
+
+        if (lexer_consume_whitespace(l, c))
+            continue;
+
+        if (lexer_consume_comment(l))
+            continue;
+
+        printf("%c", c);
+    }
+
+    arena_free(l->arena);
 }
