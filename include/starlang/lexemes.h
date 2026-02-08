@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stddef.h>
+
 #define GET_LEXEMES()                                                          \
     X(LEX_EOF)                                                                 \
     X(LEX_EOL)                                                                 \
@@ -67,3 +69,45 @@
     X(LEX_IDENT)                                                               \
     X(LEX_NUM)                                                                 \
     X(LEX_STRING)
+
+/*
+ * the enum that lists all lexeme types.
+ */
+typedef enum {
+#define X(name) name,
+#include <starlang/lexemes.h>
+    GET_LEXEMES()
+#undef X
+} lexeme_type_t;
+
+static inline char *lexeme_to_str(lexeme_type_t t) {
+    static char *table[] = {
+#define X(name) #name,
+#include <starlang/lexemes.h>
+        GET_LEXEMES()
+#undef X
+    };
+
+    return table[t];
+}
+
+#define LEXEME_FIELDS()                                                        \
+    lexeme_type_t type;                                                        \
+    char *view;                                                                \
+    size_t view_len;                                                           \
+    char *line_view;                                                           \
+    size_t line_view_len;                                                      \
+    size_t line;                                                               \
+    size_t col;                                                                \
+    size_t pos;                                                                \
+    char *filename;
+
+/*
+ * struct for holding information about a lexeme. this belongs to a region of
+ * type `lexer_region_t`.
+ */
+typedef struct lexeme_t {
+    LEXEME_FIELDS()
+
+    struct lexeme_t *next;
+} lexeme_t;
