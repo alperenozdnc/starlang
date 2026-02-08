@@ -30,6 +30,9 @@ void lexer(arena_t *trans_arena, src_t *source) {
 
         if (lexer_lex_number(l, c))
             continue;
+
+        if (lexer_lex_iden(l, c))
+            continue;
     }
 
     lexer_visualize(l);
