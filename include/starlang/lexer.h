@@ -272,6 +272,13 @@ lexer_t *lexer_init(src_t *source);
 bool lexer_lex_string(lexer_t *l, char c);
 
 /*
+ * lexically analyzes all numbers and adds them as lexemes to their respective
+ * regions. this doesn't distincuate between integers, floats, negatives, hexes,
+ * and so on. that's the job of the parser.
+ */
+bool lexer_lex_number(lexer_t *l, char c);
+
+/*
  * visualizes all lexemes in all regions in format `TYPE(VALUE)`.
  * */
 void lexer_visualize(lexer_t *l);
