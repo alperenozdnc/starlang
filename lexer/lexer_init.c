@@ -10,9 +10,12 @@ lexer_t *lexer_init(src_t *source) {
     memset(l, 0, sizeof(*l));
 
     l->arena = a;
+
     l->src = source->content;
     l->src_len = source->content_len;
+
     l->region = lexer_generate_regions(l->arena, source);
+    l->base_region = l->region;
 
     return l;
 }
