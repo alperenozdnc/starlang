@@ -30,6 +30,8 @@ decl func(): nothing {
     } else if (nothing != nothing) {
         println("nothing isn't nothing!");
     }
+
+    printlnf("\"I'm a cool quote.\"");
 }
 
 func();
