@@ -33,7 +33,7 @@ lexical_info_t *lexer_flatten_lexemes(arena_t *trans_arena, lexer_t *l) {
         lexeme_t *lex = reg->lexemes;
 
         while (lex != NULL) {
-            lex_t *_lex = arena_alloc(trans_arena, sizeof(*lex));
+            lex_t *_lex = arena_alloc(trans_arena, sizeof(*_lex));
 
             memcpy(_lex, lex,
                    sizeof(*lex) -
