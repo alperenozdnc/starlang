@@ -279,6 +279,12 @@ bool lexer_lex_string(lexer_t *l, char c);
 bool lexer_lex_number(lexer_t *l, char c);
 
 /*
+ * lexically analyzes all identifiers and adds them as lexemes to their
+ * respective regions.
+ */
+bool lexer_lex_iden(lexer_t *l, char c);
+
+/*
  * visualizes all lexemes in all regions in format `TYPE(VALUE)`.
  * */
 void lexer_visualize(lexer_t *l);
