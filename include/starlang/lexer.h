@@ -1,6 +1,7 @@
 #pragma once
 
 #include <starlang/arena.h>
+#include <starlang/frontend.h>
 #include <starlang/transitions.h>
 #include <starlang/utils.h>
 
@@ -72,7 +73,8 @@ typedef enum {
     LEX_MODE_NUMBER,
     LEX_MODE_STR,
     LEX_MODE_IDEN,
-    LEX_MODE_CONSUME_LINE
+    LEX_MODE_CONSUME_LINE,
+    LEX_MODE_HIJACKED
 } lexer_mode_t;
 
 /*
@@ -160,18 +162,65 @@ static inline bool lexer_consume_whitespace(lexer_t *l, char c) {
 }
 
 /*
+ * advances lexer to the next character in source while keeping in mind the
+ * line, column, position and region information.
+ */
+char lexer_continue(lexer_t *l);
+
+/*
  * consumes any comment if lexer mode is normal.
  */
 static inline bool lexer_consume_comment(lexer_t *l) {
     if (l->mode != LEX_MODE_NORMAL)
         return false;
 
-    if (l->line_view[0] == '#' ||
-        util_does_str_end_with_suffix(l->line_view, "##")) {
+    bool singleline_comment = (l->line_view[0] == '#');
+    bool multiline_comment =
+        (singleline_comment && (l->line_len > 1 && l->line_view[1] == '#'));
+
+    // multiline case has singleline as true too, no need for redundant check
+    if (!singleline_comment)
+        return false;
+
+    if (!multiline_comment) {
         l->mode = LEX_MODE_CONSUME_LINE;
 
         return true;
     }
+
+    size_t comment_len = 0; // includes the character we're on
+
+    for (size_t i = l->pos; i < l->src_len; i++) {
+        char c = l->src[i];
+        char cn = (i < l->src_len - 1) ? l->src[i + 1] : EOF;
+
+        if (cn == EOF)
+            goto eof_err;
+
+        comment_len++;
+
+        if (c == '#' && c == cn)
+            break;
+    }
+
+    l->mode = LEX_MODE_HIJACKED;
+
+    size_t consumed_len = 0;
+    while ((consumed_len++) <= comment_len)
+        lexer_continue(l);
+
+    l->mode = LEX_MODE_NORMAL;
+
+    return true; // not passing through to exclude first character of comment,
+                 // because state changes of lexer_continue in the loop can't
+                 // affect the value of c in the curr loop
+
+eof_err:
+    FRONTEND_THROW_TRACED_ERR_WITH_POS(
+        l->region->filename, l->line_view, l->line + 1, l->col, 2,
+        "expected delimiter for comment starting on line %zu, col %zu. found "
+        "EOF instead.",
+        l->line + 1, l->col);
 
     return false;
 }
@@ -215,12 +264,6 @@ lexeme_t *lexer_lexify_token(lexer_t *l, lexeme_type_t type, size_t len);
  * initializes the lexer's state.
  */
 lexer_t *lexer_init(src_t *source);
-
-/*
- * advances lexer to the next character in source while keeping in mind the
- * line, column, position and region information.
- */
-char lexer_continue(lexer_t *l);
 
 /*
  * lexically analyzes all strings and adds them as lexemes to their respective
