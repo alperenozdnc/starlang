@@ -31,7 +31,7 @@ decl func(): nothing {
         println("nothing isn't nothing!");
     }
 
-    printlnf("\"I'm a cool quote.\"");
+    println("\"I'm a cool quote.\"");
 }
 
 func();
