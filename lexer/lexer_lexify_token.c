@@ -32,6 +32,7 @@ lexeme_t *lexer_lexify_token(lexer_t *l, lexeme_type_t type, size_t len) {
     lex->type = type;
     lex->line_view = l->line_view;
     lex->line_view_len = l->line_len;
+    lex->filename = l->region->filename;
 
     return lex;
 }
