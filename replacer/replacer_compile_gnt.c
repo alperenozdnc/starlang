@@ -59,6 +59,12 @@ void replacer_compile_gnt(arena_t *arena, char *parent_dir, nmspc_decl_t **decl,
         assert(f != NULL);
 
         size_t file_size = util_get_file_size(f);
+
+        if (file_size == 0)
+            FRONTEND_THROW_TRACED_ERR_WITH_POS(
+                link->self->path, "", 1, 1, 1,
+                "source file is empty, cannot continue replacement routine.");
+
         char *file_content = util_read_file_into_arena(arena, f);
 
         link->self->content = file_content;
