@@ -34,7 +34,11 @@ lexical_info_t *lexer_flatten_lexemes(arena_t *trans_arena, lexer_t *l) {
 
         while (lex != NULL) {
             lex_t *_lex = arena_alloc(trans_arena, sizeof(*lex));
-            memcpy(_lex, lex, sizeof(*lex) - 8);
+
+            memcpy(_lex, lex,
+                   sizeof(*lex) -
+                       8); // -8 is because lex_t has exactly 8 bytes less than
+                           // lexeme_t, and all other fields are identical
 
             info->lexemes[i++] = _lex;
 
