@@ -57,6 +57,8 @@ bool lexer_lex_number(lexer_t *l, char c) {
 
     if (!char_belongs_to_num || is_last_char_in_line) {
         l->mode = LEX_MODE_NORMAL;
+
+        return false;
     }
 
     return true;
