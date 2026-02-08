@@ -171,6 +171,8 @@ char lexer_continue(lexer_t *l);
  * consumes any comment if lexer mode is normal.
  */
 static inline bool lexer_consume_comment(lexer_t *l) {
+    // TODO: start from first visible char instead of first char
+
     if (l->mode != LEX_MODE_NORMAL)
         return false;
 
@@ -283,6 +285,12 @@ bool lexer_lex_number(lexer_t *l, char c);
  * respective regions.
  */
 bool lexer_lex_iden(lexer_t *l, char c);
+
+/*
+ * lexically analyzes all miscellaneous tokens and adds them as lexemes to their
+ * respective regions.
+ */
+bool lexer_lex_misc(lexer_t *l, char c);
 
 /*
  * visualizes all lexemes in all regions in format `TYPE(VALUE)`.
