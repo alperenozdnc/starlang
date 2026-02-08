@@ -18,7 +18,9 @@ bool frontend_entrypoint(char *rel_main_module_path, char *parent_path,
     src_t *source = replacer(trans_arena, main_module_path, parent_path,
                              filename, buf, file_size - 1);
 
-    lexer(trans_arena, source);
+    lexical_info_t *lex = lexer(trans_arena, source);
+
+    (void)lex;
 
     arena_free(trans_arena);
     fclose(file);
