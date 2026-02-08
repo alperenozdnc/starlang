@@ -22,8 +22,11 @@ void lexer(arena_t *trans_arena, src_t *source) {
         if (lexer_consume_comment(l))
             continue;
 
-        printf("%c", c);
+        if (lexer_lex_string(l, c))
+            continue;
     }
+
+    lexer_visualize(l);
 
     arena_free(l->arena);
 }
