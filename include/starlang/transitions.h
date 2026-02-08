@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <starlang/lexemes.h>
+
 #include <stddef.h>
 
 /* struct holding information about a file's position in the source. this is
@@ -30,3 +32,12 @@ typedef struct {
     size_t import_indices_len;
     size_t file_ranges_len;
 } src_t;
+
+typedef struct {
+    LEXEME_FIELDS()
+} lex_t;
+
+typedef struct {
+    lex_t **lexemes;
+    size_t lexeme_count;
+} lexical_info_t;
