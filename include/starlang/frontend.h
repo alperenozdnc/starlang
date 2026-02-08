@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ezcli.h>
+#include <stdlib.h>
 
 // yes this does use cliprint which is an ezcli primitive but it's definitely
 // better to have a unified printer
