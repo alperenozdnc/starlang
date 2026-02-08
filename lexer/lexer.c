@@ -1,3 +1,4 @@
+#include "starlang/frontend.h"
 #include <starlang/arena.h>
 #include <starlang/lexer.h>
 #include <starlang/transitions.h>
@@ -19,9 +20,6 @@ void lexer(arena_t *trans_arena, src_t *source) {
         if (lexer_consume_import(l, source))
             continue;
 
-        if (lexer_consume_whitespace(l, c))
-            continue;
-
         if (lexer_consume_comment(l))
             continue;
 
@@ -33,6 +31,17 @@ void lexer(arena_t *trans_arena, src_t *source) {
 
         if (lexer_lex_iden(l, c))
             continue;
+
+        if (lexer_consume_whitespace(l, c))
+            continue;
+
+        if (lexer_lex_misc(l, c))
+            continue;
+
+        FRONTEND_THROW_TRACED_ERR_WITH_POS(
+            l->region->filename, l->line_view, l->line + 1, l->col, 1,
+            "unrecognized character '%c' at line %zu, col %zu", c, l->line + 1,
+            l->col);
     }
 
     lexer_visualize(l);
