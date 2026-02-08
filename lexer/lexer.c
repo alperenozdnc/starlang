@@ -3,9 +3,7 @@
 #include <starlang/lexer.h>
 #include <starlang/transitions.h>
 
-void lexer(arena_t *trans_arena, src_t *source) {
-    (void)trans_arena;
-
+lexical_info_t *lexer(arena_t *trans_arena, src_t *source) {
     lexer_t *l = lexer_init(source);
 
     char c = '\0';
@@ -44,7 +42,11 @@ void lexer(arena_t *trans_arena, src_t *source) {
             l->col);
     }
 
-    lexer_visualize(l);
+    lexer_lexify_token(l, LEX_EOF, 0);
+
+    lexical_info_t *info = lexer_flatten_lexemes(trans_arena, l);
 
     arena_free(l->arena);
+
+    return info;
 }
