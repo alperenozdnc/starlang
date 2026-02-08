@@ -15,7 +15,11 @@ decl sum(num x, num y): num {
 }
 
 decl func(): nothing {
-    float pi = 3.14159265358979323;
+    float pi = f3.14159265358979323;
+    float lessthanzero = f.2;
+    float million = 1_000_000;
+    float negfloat = -f1.2;
+    float mixed = -f1_.232_3225_21;
 
     printlnf("pi is approx. {pi}");
 
