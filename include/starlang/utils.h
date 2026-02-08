@@ -80,10 +80,15 @@ char util_enforce_str_rules(char *str, size_t len, char_whitelist_t whitelist,
  * directly.
  */
 char *_util_build_str(arena_t *arena, ...);
+#define util_build_str(arena, ...) _util_build_str(arena, __VA_ARGS__, NULL)
 
 /*
  * counts the amount of lines in a file.
  */
 size_t util_count_lines(FILE *fptr);
 
-#define util_build_str(arena, ...) _util_build_str(arena, __VA_ARGS__, NULL)
+/*
+ * allocates a string into an arena reading from a slice of characters living in
+ * `view` for size `len`.
+ */
+char *util_dup_slice(arena_t *arena, char *view, size_t len);
