@@ -21,6 +21,9 @@
     l->mode = LEX_MODE_NORMAL;
 
 bool lexer_lex_misc(lexer_t *l, char c) {
+    // TODO: all miscellaneous lexemes, singlechar or not, seem to share
+    // patterns. generalize.
+
     lexeme_t *lex = NULL;
 
     char nc = lexer_peek(l, 0);
