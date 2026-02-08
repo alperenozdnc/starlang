@@ -2,6 +2,7 @@
 
 #include <starlang/arena.h>
 #include <starlang/frontend.h>
+#include <starlang/lexemes.h>
 #include <starlang/transitions.h>
 #include <starlang/utils.h>
 
@@ -11,46 +12,6 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
-
-/*
- * the enum that lists all lexeme types.
- */
-typedef enum {
-#define X(name) name,
-#include <starlang/lexemes.h>
-    GET_LEXEMES()
-#undef X
-} lexeme_type_t;
-
-static inline char *lexeme_to_str(lexeme_type_t t) {
-    static char *table[] = {
-#define X(name) #name,
-#include <starlang/lexemes.h>
-        GET_LEXEMES()
-#undef X
-    };
-
-    return table[t];
-}
-
-/*
- * struct for holding information about a lexeme. this belongs to a region of
- * type `lexer_region_t`.
- */
-typedef struct lexeme_t {
-    lexeme_type_t type;
-
-    char *view;
-    size_t view_len;
-    char *line_view;
-    size_t line_view_len;
-
-    size_t line;
-    size_t col;
-    size_t pos;
-
-    struct lexeme_t *next;
-} lexeme_t;
 
 /*
  * struct for holding information about a lexer region. a lexer region is a
@@ -298,8 +259,13 @@ bool lexer_lex_misc(lexer_t *l, char c);
 void lexer_visualize(lexer_t *l);
 
 /*
+ * flattens all lexemes into an array for use from the parser.
+ */
+lexical_info_t *lexer_flatten_lexemes(arena_t *trans_arena, lexer_t *l);
+
+/*
  * the lexer routine - this step in the pipeline converts all non-whitespace
  * tokens into 'lexemes'. you can think about lexemes as all tokens generalized
  * into the smallest categories possible without losing meaning.
  */
-void lexer(arena_t *trans_arena, src_t *source);
+lexical_info_t *lexer(arena_t *trans_arena, src_t *source);
