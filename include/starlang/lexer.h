@@ -41,9 +41,12 @@ typedef struct lexeme_t {
 
     char *view;
     size_t view_len;
+    char *line_view;
+    size_t line_view_len;
 
     size_t line;
     size_t col;
+    size_t pos;
 
     struct lexeme_t *next;
 } lexeme_t;
@@ -90,8 +93,11 @@ typedef struct {
     size_t col;
 
     lexer_mode_t mode;
+    lexer_region_t *base_region;
     lexer_region_t *region;
     arena_t *arena;
+
+    bool is_str_dbquot;
 } lexer_t;
 
 /*
@@ -142,8 +148,8 @@ static inline char *lexer_get_line(lexer_t *l) {
  * peeks any character with a specific offset in the source content. returns
  * `'\0'` if bounds checking fails.
  */
-static inline char lexer_peek(lexer_t *l, size_t offset) {
-    return l->pos + offset < l->src_len ? l->src[l->pos + offset] : '\0';
+static inline char lexer_peek(lexer_t *l, int offset) {
+    return (l->pos + offset) < l->src_len ? l->src[l->pos + offset] : '\0';
 }
 
 /*
@@ -203,7 +209,7 @@ lexer_region_t *lexer_generate_regions(arena_t *arena, src_t *source);
 /*
  * appends a lexeme to the tail of a lexeme or creates a tail if none exists.
  */
-void lexer_lexify_token(lexer_t *l, lexeme_type_t type, size_t len);
+lexeme_t *lexer_lexify_token(lexer_t *l, lexeme_type_t type, size_t len);
 
 /*
  * initializes the lexer's state.
@@ -215,6 +221,17 @@ lexer_t *lexer_init(src_t *source);
  * line, column, position and region information.
  */
 char lexer_continue(lexer_t *l);
+
+/*
+ * lexically analyzes all strings and adds them as lexemes to their respective
+ * regions.
+ */
+bool lexer_lex_string(lexer_t *l, char c);
+
+/*
+ * visualizes all lexemes in all regions in format `TYPE(VALUE)`.
+ * */
+void lexer_visualize(lexer_t *l);
 
 /*
  * the lexer routine - this step in the pipeline converts all non-whitespace
