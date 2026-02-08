@@ -6,15 +6,13 @@
     X(LEX_SEMI)                                                                \
     X(LEX_COLON)                                                               \
     X(LEX_COMMA)                                                               \
-    X(LEX_COMMENT)                                                             \
     X(LEX_PERIOD)                                                              \
                                                                                \
     X(LEX_NOT)                                                                 \
     X(LEX_BITWISE_NOT)                                                         \
                                                                                \
     X(LEX_XOR)                                                                 \
-                                                                               \
-    X(LEX_ACCESS_MEMBER)                                                       \
+    X(LEX_XOR_EQ)                                                              \
                                                                                \
     X(LEX_LPAREN)                                                              \
     X(LEX_RPAREN)                                                              \
@@ -22,9 +20,6 @@
     X(LEX_RBRACKET)                                                            \
     X(LEX_LSQUIRLY)                                                            \
     X(LEX_RSQUIRLY)                                                            \
-                                                                               \
-    X(LEX_DQUOTE)                                                              \
-    X(LEX_QUOTE)                                                               \
                                                                                \
     X(LEX_EQ)                                                                  \
     X(LEX_INEQUALITY_CHECK)                                                    \
@@ -61,9 +56,11 @@
                                                                                \
     X(LEX_LOGICAL_AND)                                                         \
     X(LEX_BITWISE_AND)                                                         \
+    X(LEX_BITWISE_AND_EQ)                                                      \
                                                                                \
     X(LEX_LOGICAL_OR)                                                          \
     X(LEX_BITWISE_OR)                                                          \
+    X(LEX_BITWISE_OR_EQ)                                                       \
                                                                                \
     X(LEX_TERNARY)                                                             \
                                                                                \
