@@ -2,11 +2,14 @@
 #include <starlang/frontend.h>
 #include <starlang/utils.h>
 
+#include <starlang/auditer.h>
 #include <starlang/lexer.h>
 #include <starlang/replacer.h>
 
 bool frontend_entrypoint(char *rel_main_module_path, char *parent_path,
                          char *filename) {
+    bool ret = true;
+
     FILE *file = fopen(rel_main_module_path, "r");
     size_t file_size = util_get_file_size(file);
 
@@ -20,10 +23,15 @@ bool frontend_entrypoint(char *rel_main_module_path, char *parent_path,
 
     lexical_info_t *lex = lexer(trans_arena, source);
 
-    (void)lex;
+    if (auditer(lex)) {
+        ret = false;
 
+        goto terminate;
+    }
+
+terminate:
     arena_free(trans_arena);
     fclose(file);
 
-    return true;
+    return ret;
 }
