@@ -12,6 +12,7 @@ endif
 ARENA_DIR = arena
 REPLACER_DIR = replacer
 LEXER_DIR = lexer
+AUDITER_DIR = auditer
 UTILS_DIR = utils
 FRONTEND_DIR = frontend
 
@@ -46,6 +47,15 @@ $(LEXER_BUILD_DIR)/%.o: $(LEXER_DIR)/%.c
 
 	$(CC) $(CFLAGS) -c $< -o $@
 
+AUDITER_BUILD_DIR := $(BUILD_DIR)/$(AUDITER_DIR)
+AUDITER_SRC := $(shell find $(AUDITER_DIR) -name '*.c')
+AUDITER_OBJ := $(AUDITER_SRC:$(AUDITER_DIR)/%.c=$(AUDITER_BUILD_DIR)/%.o)
+
+$(AUDITER_BUILD_DIR)/%.o: $(AUDITER_DIR)/%.c
+	@mkdir -p $(dir $@)
+
+	$(CC) $(CFLAGS) -c $< -o $@
+
 UTILS_BUILD_DIR := $(BUILD_DIR)/$(UTILS_DIR)
 UTILS_SRC := $(shell find $(UTILS_DIR) -name '*.c')
 UTILS_OBJ := $(UTILS_SRC:$(UTILS_DIR)/%.c=$(UTILS_BUILD_DIR)/%.o)
@@ -68,7 +78,7 @@ STARLANG_BIN_NAME := starlang
 STARLANG_BIN := $(BIN_DIR)/$(STARLANG_BIN_NAME)
 ROOT_BIN_DIR = /usr/bin
 
-$(STARLANG_BIN): $(ARENA_OBJ) $(REPLACER_OBJ) $(LEXER_OBJ) $(UTILS_OBJ) $(FRONTEND_OBJ)
+$(STARLANG_BIN): $(ARENA_OBJ) $(REPLACER_OBJ) $(LEXER_OBJ) $(AUDITER_OBJ) $(UTILS_OBJ) $(FRONTEND_OBJ)
 	@mkdir -p $(dir $@)
 
 	$(CC) $(CFLAGS) $^ -lezcli -lm -o $@
