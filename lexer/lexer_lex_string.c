@@ -80,13 +80,9 @@ bool lexer_lex_string(lexer_t *l, char c) {
         return true;
     }
 
-    // this is redundant because all predicates in str_passive have already been
-    // verified by the if guards above, but this lets me assert unreachability
-    // after this statement which may be an optimization
-    bool str_passive = (!char_cant_belong_to_str && !str_begin &&
-                        !str_seen_delim && !str_continue);
-    if (str_passive)
-        return false;
+    // this function is mathematically exhaustive and
+    // that fact lets me assert unreachability
+    // which may be an optimization
 
     __builtin_unreachable();
 
