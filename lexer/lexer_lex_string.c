@@ -80,11 +80,7 @@ bool lexer_lex_string(lexer_t *l, char c) {
         return true;
     }
 
-    // this function is mathematically exhaustive and
-    // that fact lets me assert unreachability
-    // which may be an optimization
-
-    __builtin_unreachable();
+    return false;
 
 eof_err:
     FRONTEND_THROW_TRACED_ERR_WITH_POS(
