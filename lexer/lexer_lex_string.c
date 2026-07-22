@@ -87,7 +87,7 @@ eof_err:
         l->region->filename,
         util_dup_slice(l->arena, lex->line_view, lex->line_view_len),
         lex->line + 1, lex->col, 1,
-        "found EOF instead of termination while"
+        "found EOF instead of termination while "
         "reading string on line %zu, col %zu.",
         lex->line + 1, lex->col);
 }
