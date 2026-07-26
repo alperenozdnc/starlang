@@ -1,5 +1,7 @@
 #pragma once
 
+#include <starlang/lexemes.h>
+
 #include <stdbool.h>
 #include <stddef.h>
 
@@ -26,6 +28,11 @@ typedef struct {
 } symbol_stack_t;
 
 /*
+ * maps a character to a lexeme.
+ */
+char sstack_map(lexeme_type_t lex);
+
+/*
  * pushes a symbol to the top of a symbol stack.
  */
 void sstack_push(symbol_stack_t *st, symbol_t *sym);
@@ -38,9 +45,9 @@ void sstack_pop(symbol_stack_t *st);
 /*
  * returns the topmost symbol of a symbol stack.
  */
-extern inline symbol_t *sstack_peek(symbol_stack_t *st);
+symbol_t *sstack_peek(symbol_stack_t *st);
 
 /*
  * returns a boolean value for whether a symbol stack has no symbols.
  */
-extern inline bool sstack_is_empty(symbol_stack_t *st);
+bool sstack_is_empty(symbol_stack_t *st);
